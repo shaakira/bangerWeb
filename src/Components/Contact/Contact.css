@@ -1,0 +1,22 @@
+.container-content{
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-top: 3rem;
+
+}
+.header-text{
+    margin-left: 10rem;
+}
+.dot-text{
+color: #ffb700;
+}
+.backgroundImage{
+    background-image: url("../../Images/contact.PNG");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-right: 1rem;
+}
+.align-cont{
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}

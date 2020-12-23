@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+  }
+  .container-testimonial{
+      background-color: white;
+      margin-right: 1rem;
+  }
+  /* Create two equal columns that floats next to each other */
+  .column {
+    float: left;
+    padding: 10px;
+    height: 400px; /* Should be removed. Only for demonstration */
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .inner-container{
+    padding-left: 8rem;
+    padding-top: 5rem;
+    background-color: whitesmoke;
+    width: 40%;
+  }
+  
+  .slider-container{
+    text-align: center;
+    display:'block';
+    padding: 5rem;
+  }
+  .slider-item{
+      text-align: center;
+      display: block;
+      padding-left: 5rem;
+      padding-right: 5rem;
+  }
