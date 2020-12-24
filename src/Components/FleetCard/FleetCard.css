@@ -1,0 +1,49 @@
+.container-style{
+    border: 1px solid;
+    border-color: rgb(235, 233, 233);
+    height: 100%;
+    margin: 1rem;
+
+}
+.img-container{
+    padding: 1rem;
+    flex:1.2;
+}
+.imgs-style{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   width:250px;
+   height: 220px;
+}
+.des-container{
+    flex:2;
+    padding: 1rem;
+
+
+}
+.price-container{
+    background-color: rgb(235, 233, 233);
+    flex:1;
+    text-align: center;
+    padding-top: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+   
+}
+.img-row{
+    padding-left: 1rem;
+
+}
+.text-row{
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+}
+.flex-row{
+    height: 4rem;
+    flex: 1;
+}
+.inner-cont{
+    display: flex;
+    flex:1;
+}

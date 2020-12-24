@@ -1,0 +1,12 @@
+.sec-container{
+    border: 1px solid;
+    border-color: #ffb700;
+    margin: 1rem;
+    padding: 1rem;
+    background-color: white;
+
+}
+.img-style{
+ width: 150px;
+ height: 150px;
+}

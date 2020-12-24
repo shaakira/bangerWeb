@@ -1,0 +1,22 @@
+#minimalistintro .view {
+    min-height: 100vh !important;
+    height: unset !important;
+  }
+  .container-text{
+      margin-top: 5rem;
+  }
+  .header-text-style{
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 1rem;
+  color: white;
+  }
+  .fleet-container{
+      padding: 2rem;
+  }
+  .add-on-container{
+    margin: 1rem;
+    padding: 1rem;
+    background-color: whitesmoke;
+  }
