@@ -1,0 +1,26 @@
+
+.div-styles{
+	min-height: 100vh !important;
+	height: unset !important;
+	position: relative;
+}
+.inner-divs{
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 10px 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 1000px;
+    height: 550px;
+    
+}
+.-container{
+	border-radius: 15px 50px 30px 5px;
+	padding:5rem;
+}
+.logo-img{
+	width: 100px;
+	height: 100px;
+}

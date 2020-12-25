@@ -30,7 +30,7 @@ class IntroPg extends React.Component {
  
     return (
       <div id='minimalistintro'>
-        <NavBar/>
+        <NavBar active="home"/>
         <MDBView src={slider1}>
           <MDBMask/>
           <MDBContainer

@@ -21,7 +21,7 @@ class Fleet extends React.Component {
   render() {
     return (
       <div id="minimalistintro">
-        <NavBar />
+        <NavBar active="fleet"/>
         <MDBView src={slider1}>
           <MDBMask />
           <MDBContainer className="d-flex justify-content-center align-items-center container-text">

@@ -2,6 +2,8 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from "./Components/IntroPg/IntroPg";
 import FleetPage from "./Screens/Fleet/Fleet";
+import Login from "./Screens/Login/Login"
+import Register from './Screens/Register/Register'
 
 function App() {
   return (
@@ -9,8 +11,8 @@ function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/fleet" component={FleetPage} />
-        <Route exact path="/aboutUs" component={HomePage} />
-        <Route exact path="/contact" component={HomePage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
 
       </Switch>
     </Router>
