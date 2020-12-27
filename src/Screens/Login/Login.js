@@ -1,23 +1,51 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { MDBInput, MDBBtn, MDBAnimation } from "mdbreact";
+import axios from 'axios';
+import {
+  MDBInput,
+  MDBBtn,
+  MDBAnimation,
+  MDBIcon,
+} from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Login/Login.css";
 
 class Login extends React.Component {
+  state={
+  user:{email:'',password:''}
+  }
+  handleSubmit=async()=>{
+   
+    //Calling the back end endpoints
+    await axios.post("http://localhost:8080/authenticate",this.state.user)
+     .then(response => 
+     { 
+        if(response.status===200){
+          localStorage.setItem("email",response.data.username)
+          this.props.history.push("/")
+      }}
+     )
+    .catch(error => 
+    { if(error.response.status===401){
+      console.log("user Credentials Wrong")
+     }
+    });
+  } 
+    
+
+  
+
+  handleChange=e=>{
+    //console.log("test change")
+    const user ={...this.state.user};
+    user[e.currentTarget.name]=e.currentTarget.value;
+    this.setState({user});
+    // console.log(JSON.stringify(user))
+  }
   render() {
     return (
       <section>
-        <div className="row" style={{ margin: "2rem" }}>
-          <img alt="" src={logo} className="logo-img" />
-          <a href="/">
-            <h3 style={{ marginTop: "2rem", color: "black" }}>
-              BANGER <span style={{ color: "#ffb700" }}>&</span> CO
-            </h3>
-          </a>
-        </div>
-
         <div className="div-style">
           <div className="inner-div">
             <div className="row" style={{ flex: 1 }}>
@@ -34,15 +62,24 @@ class Login extends React.Component {
                     <p className="h5 text-center mb-4">Sign in</p>
                     <div className="grey-text">
                       <MDBInput
+                        id="email"
+                        name="email"
                         label="Type your email"
+                        value={this.state.user.username}
+                        onChange={this.handleChange}
                         icon="envelope"
                         group
                         type="email"
                         validate
                         error="wrong"
                         success="right"
+                        
                       />
                       <MDBInput
+                        id="password"
+                        name="password"
+                        value={this.state.user.password}
+                        onChange={this.handleChange}
                         label="Type your password"
                         icon="lock"
                         group
@@ -51,8 +88,40 @@ class Login extends React.Component {
                       />
                     </div>
                     <div className="text-center">
-                      <MDBBtn outline color="amber">
+                      <MDBBtn outline color="amber"
+                      onClick={e=>this.handleSubmit()}>
                         Login
+                      </MDBBtn>
+                    </div>
+                    <div className="row" style={{ marginTop: "2rem" }}>
+                      <div
+                        style={{
+                          height: "0.25px",
+                          width: "10rem",
+                          backgroundColor: "#E6E4E4",
+                        }}
+                      />
+                      <p
+                        style={{
+                          paddingLeft: "20px",
+                          paddingRight: "20px",
+                          marginTop: "-0.7rem",
+                        }}
+                      >
+                        or
+                      </p>
+                      <div
+                        style={{
+                          height: "0.25px",
+                          width: "10rem",
+                          backgroundColor: "#E6E4E4",
+                        }}
+                      />
+                    </div>
+                    <div className="text-center">
+                      <MDBBtn color="black">
+                        <MDBIcon fab icon="google" />
+                        <span style={{ marginLeft: "1rem" }}>Google</span>
                       </MDBBtn>
                     </div>
                   </form>
@@ -74,7 +143,10 @@ class Login extends React.Component {
                       }}
                       alt=""
                     />
-                    <div style={{ marginTop: "-22rem" }}>
+                    <div style={{ marginTop: "-30rem" }}>
+                      <a href="/">
+                        <img alt="" src={logo} className="logo-img" />
+                      </a>
                       <h3 className="h2-responsive font-weight-bold">
                         Hello, Friend!
                       </h3>

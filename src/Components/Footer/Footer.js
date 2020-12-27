@@ -15,11 +15,11 @@ const Footer = () => {
 
           </MDBCol>
           <MDBCol md="1">
-          <h6 className="title"><a href="/" style={{color:'black',}}>Find a car</a></h6>
+          <h6 className="title"><a href="/fleet" style={{color:'black',}}>Find a car</a></h6>
 
           </MDBCol>  
           <MDBCol md="1">
-          <h6 className="title"><a href="/" style={{color:'black',}}>About us</a></h6>
+          <h6 className="title"><a href="/aboutUs" style={{color:'black',}}>About us</a></h6>
 
           </MDBCol>  
           <MDBCol md="1">

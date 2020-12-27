@@ -4,6 +4,7 @@ import HomePage from "./Components/IntroPg/IntroPg";
 import FleetPage from "./Screens/Fleet/Fleet";
 import Login from "./Screens/Login/Login"
 import Register from './Screens/Register/Register'
+import AboutUsScreen from "./Screens/AboutUsScreen/AboutUsScreen";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/fleet" component={FleetPage} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <Route exact path="/aboutUs" component={AboutUsScreen}/>
 
       </Switch>
     </Router>

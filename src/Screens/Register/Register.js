@@ -4,20 +4,34 @@ import { MDBInput, MDBBtn, MDBAnimation } from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Register/Register.css";
+import axios from 'axios';
 
 class Register extends React.Component {
+  state={
+    user:{userName:'',email:'',password:''}
+  }
+
+  handleChange=e=>{
+    const user={...this.state.user};
+    user[e.currentTarget.name]=e.currentTarget.value;
+    this.setState({user});
+  }
+
+  handleSubmit =async()=>{
+  await  axios.post("http://localhost:8080/signUp",this.state.user)
+    .then(response=>{
+      if(response.status===200){
+        console.log("Registered")
+      }
+    })
+    .catch(error=>
+      console.log(error))
+  }
+
+
   render() {
     return (
       <section>
-        <div className="row" style={{ margin: "2rem" }}>
-          <img alt="" src={logo} className="logo-img" />
-          <a href="/">
-            <h3 style={{ marginTop: "2rem", color: "black" }}>
-              BANGER <span style={{ color: "#ffb700" }}>&</span> CO
-            </h3>
-          </a>
-        </div>
-
         <div className="div-styles">
           <div className="inner-divs">
             <div className="row" style={{ flex: 1 }}>
@@ -36,7 +50,8 @@ class Register extends React.Component {
                       }}
                       alt=""
                     />
-                    <div style={{ marginTop: "-22rem" }}>
+                    <div style={{ marginTop: "-30rem" }}>
+                    <a href="/"><img alt="" src={logo} className="logo-img" /></a>
                       <h3 className="h2-responsive font-weight-bold">
                         Welcome Back !
                       </h3>
@@ -68,6 +83,10 @@ class Register extends React.Component {
                     <p className="h5 text-center mb-4">Sign up</p>
                     <div className="grey-text">
                       <MDBInput
+                        id="userName"
+                        name="userName"
+                        value={this.state.user.userName}
+                        onChange={this.handleChange}
                         label="Your name"
                         icon="user"
                         group
@@ -77,6 +96,10 @@ class Register extends React.Component {
                         success="right"
                       />
                       <MDBInput
+                        id="email"
+                        name="email"
+                        value={this.state.user.email}
+                        onChange={this.handleChange}
                         label="Your email"
                         icon="envelope"
                         group
@@ -95,6 +118,10 @@ class Register extends React.Component {
                         success="right"
                       />
                       <MDBInput
+                        id="password"
+                        name="password"
+                        value={this.state.user.password}
+                        onChange={this.handleChange}
                         label="Your password"
                         icon="lock"
                         group
@@ -102,7 +129,7 @@ class Register extends React.Component {
                         validate
                       />
                     </div>
-                    <div className="text-center">
+                    <div className="text-center" onClick={e=>this.handleSubmit()}>
                       <MDBBtn outline color="amber">Register</MDBBtn>
                     </div>
                   </form>

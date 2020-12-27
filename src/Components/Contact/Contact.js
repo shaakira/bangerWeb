@@ -13,7 +13,7 @@ const FeaturesPage = () => {
             Support
           </h1>
           <p className="h-responsive  my-3 grey-text">
-            YOU CAN FET ALL THE CONTACT INFORMATION.
+            YOU CAN FIND ALL THE CONTACT INFORMATION.
           </p>
         </div>
 

@@ -32,7 +32,7 @@ class NavBar extends React.Component {
   };
 
   componentDidMount() {
-    document.querySelector("nav").style.height = "65px";
+    document.querySelector("nav").style.height = "70px";
   }
 
   componentWillUnmount() {
@@ -50,7 +50,9 @@ class NavBar extends React.Component {
       />
     );
     return (
-      <Router>
+      <section>
+ <Router>
+
         <div>
           <MDBNavbar
             color="white"
@@ -60,21 +62,12 @@ class NavBar extends React.Component {
             transparent
             scrolling
           >
+            
             <MDBContainer>
               <MDBNavbarToggler onClick={this.handleTogglerClick} />
               <MDBCollapse isOpen={collapsed} navbar>
                 <MDBNavbarNav style={navStyle}>
-                  <MDBNavItem active={this.props.active==="home"} style={{marginTop:'-1rem'}}>
-                    <a href="/" style={{ color: this.props.active==="home"?"#ffb700": "black" }}>
-                      HOME
-                    </a>
-                  </MDBNavItem>
-                  <MDBNavItem active={this.props.active==="fleet"}  style={{marginTop:'-1rem'}}>
-                    <a href="/fleet" style={{color: this.props.active==="fleet"?"#ffb700": "black"  }}>
-                      FIND A CAR
-                    </a>
-                  </MDBNavItem>
-                  <MDBNavItem  style={{marginTop:'-1rem'}}>
+                <MDBNavItem  style={{marginTop:'-1rem'}}>
                     <a href="/">
                       <img
                         style={{ height: "8rem", width: "8rem",marginTop:'-2rem' }}
@@ -82,16 +75,34 @@ class NavBar extends React.Component {
                       />
                     </a>
                   </MDBNavItem>
-                  <MDBNavItem  style={{marginTop:'-1rem'}}>
-                    <a href="/login" style={{ color: "black" }}>
+                  <MDBNavItem active={this.props.active==="home"} style={{marginTop:'-1rem'}}>
+                    <a href="/" style={{ color: this.props.active==="home"?"#ffb700": "black" }}>
+                      HOME
+                    </a>
+                  </MDBNavItem>
+                  <MDBNavItem active={this.props.active==="fleet"} style={{marginTop:'-1rem'}}>
+                    <a href="/fleet" style={{color: this.props.active==="fleet"?"#ffb700": "black"  }}>
+                      FIND A CAR
+                    </a>
+                  </MDBNavItem>
+             
+                  <MDBNavItem active={this.props.active==="aboutUs"} style={{marginTop:'-1rem'}} >
+                    <a href="/aboutUs" style={{ color:  this.props.active==="aboutUs"?"#ffb700":"black" }} >
                       ABOUT US
                     </a>
                   </MDBNavItem>
-                  <MDBNavItem  style={{marginTop:'-1rem'}}>
-                    <a href="/contact" style={{ color: "black" }}>
+                  <MDBNavItem style={{marginTop:'-1rem'}}>
+                    <a href="/" style={{ color: "black" }}>
                       CONTACT
                     </a>
                   </MDBNavItem>
+                 
+                  <MDBNavItem style={{marginTop:'-1rem'}}>
+                    <a href="/register" style={{ color: "black" }}>
+                      LOGIN or REGISTER
+                    </a>
+                  </MDBNavItem>
+                 
                 </MDBNavbarNav>
               </MDBCollapse>
             </MDBContainer>
@@ -99,6 +110,8 @@ class NavBar extends React.Component {
           {collapsed && overlay}
         </div>
       </Router>
+      </section>
+     
     );
   }
 }

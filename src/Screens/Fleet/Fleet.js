@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
+import axios from 'axios';
 import {
   MDBMask,
   MDBRow,
@@ -18,7 +19,16 @@ import FleetCard from "../../Components/FleetCard/FleetCard";
 import AddOnCard from "../../Components/AddOnCard/AddOnCard";
 
 class Fleet extends React.Component {
+  state={
+    vehicleList :  []
+  }
+ async componentDidMount() {
+    const {data:vehicleList}=await axios.get("http://localhost:8080/api/v1/vehicle/getVehicles");
+    this.setState({vehicleList});
+ //  console.log(this.state.vehicleList);
+  }
   render() {
+    const data = this.state.vehicleList
     return (
       <div id="minimalistintro">
         <NavBar active="fleet"/>
@@ -71,8 +81,11 @@ class Fleet extends React.Component {
              </div>
             </MDBCol>
             <MDBCol md="8" className="fleet-container">
-             <FleetCard/>
-             <FleetCard/>
+                    {data.map((vehicle) => (
+                      <FleetCard data={vehicle} />
+                    ))}
+             
+           
             </MDBCol>
           </MDBRow>
         </MDBContainer>
