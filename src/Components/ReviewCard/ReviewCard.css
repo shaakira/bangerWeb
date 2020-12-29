@@ -1,0 +1,26 @@
+.rev-container{
+    
+    background-color: white;
+    margin: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    padding: 2rem;
+}
+.rounded-text{
+    border-radius: 60%;
+    background-color: rgb(211, 209, 209);
+    height: 100%;padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    margin-top: -0.5rem;
+    color: white;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+.date-text{
+    font-size: small;
+    margin-left: 3.3rem;
+    margin-top: -1rem;
+}

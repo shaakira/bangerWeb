@@ -91,8 +91,8 @@ class NavBar extends React.Component {
                       ABOUT US
                     </a>
                   </MDBNavItem>
-                  <MDBNavItem style={{marginTop:'-1rem'}}>
-                    <a href="/" style={{ color: "black" }}>
+                  <MDBNavItem active={this.props.active==="contact"} style={{marginTop:'-1rem'}}>
+                    <a href="/contact" style={{ color:  this.props.active==="contact"? "#ffb700":"black" }} >
                       CONTACT
                     </a>
                   </MDBNavItem>

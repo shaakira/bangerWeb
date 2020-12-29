@@ -1,0 +1,14 @@
+.inner-card-container{
+    height: 320px;
+    background-color: black;
+   
+
+}
+.review-container{
+    border: 1px solid #bdbcbc;
+    
+    margin: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    padding: 2rem;
+}

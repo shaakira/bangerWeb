@@ -5,6 +5,7 @@ import FleetPage from "./Screens/Fleet/Fleet";
 import Login from "./Screens/Login/Login"
 import Register from './Screens/Register/Register'
 import AboutUsScreen from "./Screens/AboutUsScreen/AboutUsScreen";
+import ContactUs from "./Screens/ContactUs/ContactUs";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/aboutUs" component={AboutUsScreen}/>
+        <Route exact path="/contact" component={ContactUs}/>
 
       </Switch>
     </Router>
