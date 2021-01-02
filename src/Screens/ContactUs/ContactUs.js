@@ -27,10 +27,12 @@ class ContactUs extends React.Component {
     this.setState({ contact });
   };
   handleSubmit =async()=>{
+
     await  axios.post("http://localhost:8080/api/contact/addContact",this.state.contact)
       .then(response=>{
         if(response.status===200){
           console.log("Submitted")
+          this.setState({contact:{name: "", email: "", subject: "", message: ""}})
         }
       })
       .catch(error=>

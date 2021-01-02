@@ -1,0 +1,32 @@
+.outer-container{
+
+
+border: 1px solid rgb(219, 218, 218);
+padding: 10px;
+}
+.out-cont{
+
+    padding: 1rem;
+}
+.cont{
+    border: 1px solid rgb(221, 219, 219);
+    border-top: 2px solid #ffb700;
+}
+.header-container{
+    height: 50px;
+    width: 120px;
+    background-color: #ffb700;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+  padding-top: 0.9rem;
+  text-transform: uppercase;
+}
+.text-p{
+font-size: '10rem';
+}
+.divider{
+    height: 0.5px;
+    background-color: rgb(219, 218, 218);
+}

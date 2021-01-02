@@ -1,37 +1,46 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
-import axios from 'axios';
+import axios from "axios";
 import {
-  MDBMask,
-  MDBRow,
-  MDBBtn,
-  MDBView,
-  MDBContainer,
   MDBAnimation,
   MDBCol,
+  MDBContainer,
+  MDBMask,
+  MDBRow,
+  MDBView,
 } from "mdbreact";
+import React from "react";
 import ScrollAnimation from "react-animate-on-scroll";
-import slider1 from "../../Images/fleetbd.PNG";
+import AddOnCard from "../../Components/AddOnCard/AddOnCard";
+import FleetCard from "../../Components/FleetCard/FleetCard";
 import Footer from "../../Components/Footer/Footer";
 import NavBar from "../../Components/NavBar/NavBar";
+import slider1 from "../../Images/fleetbd.PNG";
 import "../Fleet/Fleet.css";
-import FleetCard from "../../Components/FleetCard/FleetCard";
-import AddOnCard from "../../Components/AddOnCard/AddOnCard";
 
 class Fleet extends React.Component {
-  state={
-    vehicleList :  []
-  }
- async componentDidMount() {
-    const {data:vehicleList}=await axios.get("http://localhost:8080/api/v1/vehicle/getVehicles");
-    this.setState({vehicleList});
- //  console.log(this.state.vehicleList);
+  state = {
+    vehicleList: [],
+    equipmentList: [],
+  };
+  async componentDidMount() {
+    const { data: vehicleList } = await axios.get(
+      "http://localhost:8080/api/v1/vehicle/getVehicles"
+    );
+  this.setState({vehicleList})
+    
+    const {data: equipmentList } = await axios.get(
+      "http://localhost:8080/api/equipment/getAllEquipments"
+    );
+    this.setState({equipmentList});
+   
+    //  console.log(this.state.vehicleList);
   }
   render() {
-    const data = this.state.vehicleList
+    const data = this.state.vehicleList;
+    const equipmentData = this.state.equipmentList;
     return (
       <div id="minimalistintro">
-        <NavBar active="fleet"/>
+        <NavBar active="fleet" />
         <MDBView src={slider1}>
           <MDBMask />
           <MDBContainer className="d-flex justify-content-center align-items-center container-text">
@@ -64,9 +73,6 @@ class Fleet extends React.Component {
                     Hatchbacks and Vans to budget range all types of vehicles
                     meets your needs.
                   </h6>
-                  <MDBBtn outline color="black" style={{ marginTop: "3rem" }}>
-                    BOOK NOW
-                  </MDBBtn>
                 </ScrollAnimation>
               </MDBAnimation>
             </MDBRow>
@@ -74,25 +80,24 @@ class Fleet extends React.Component {
         </MDBView>
         <MDBContainer fluid>
           <MDBRow>
-            <MDBCol md="4" style={{backgroundColor:'whitesmoke'}}>
-             <div className="add-on-container">
-                 <h3>Add-on Options</h3>
-                 <AddOnCard/>
-             </div>
+            <MDBCol md="4" style={{ backgroundColor: "whitesmoke" }}>
+              <div className="add-on-container">
+                <h3>Add-on Options</h3>
+                {equipmentData.map((equipment) => (
+                  <AddOnCard data={equipment} />
+                ))}
+              </div>
             </MDBCol>
             <MDBCol md="8" className="fleet-container">
-                    {data.map((vehicle) => (
-                      <FleetCard data={vehicle} />
-                    ))}
-             
-           
+              {data.map((vehicle) => (
+                <FleetCard data={vehicle} />
+              ))}
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-        <div style={{marginTop:'5rem'}}>
-        <Footer/>
+        <div style={{ marginTop: "5rem" }}>
+          <Footer />
         </div>
-        
       </div>
     );
   }

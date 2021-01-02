@@ -75,7 +75,7 @@ componentDidMount(){
               <p className="h-responsive  my-3 grey-text">
                 £{this.vehicle.price}<span>/ day</span>
               </p>
-              <MDBBtn color="amber">select</MDBBtn>
+              <MDBBtn color="amber"><a href="/booking" style={{color:'white'}}>select</a></MDBBtn>
             </div>
           </section>
           <Accordion.Collapse eventKey="0">
