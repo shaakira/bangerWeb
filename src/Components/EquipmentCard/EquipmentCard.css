@@ -1,0 +1,13 @@
+.outer-card{
+    height: 120px;
+    border: 1px solid #E6E4E4;
+    margin-top: 0.5rem;
+
+}
+.flex-cont{
+    flex:1;
+    height:100px
+}
+.right-border{
+    border-right: 1px solid #E6E4E4;
+}

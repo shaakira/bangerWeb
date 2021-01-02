@@ -11,7 +11,13 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../../Components/NavBar/NavBar";
 import BookingStep1 from "./BookingSteps/BookingStep1/BookingStep1";
-import { MDBBtn ,MDBIcon,} from "mdbreact";
+import BookingStep2 from "./BookingSteps/BookingStep2/BookingStep2";
+import BookingStep3 from "./BookingSteps/BookingStep3/BookingStep3";
+import BookingStep4 from "./BookingSteps/BookingStep4/BookingStep4";
+
+
+
+import { MDBBtn, MDBIcon } from "mdbreact";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -102,11 +108,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3rem",
   },
   button: {
-    marginLeft:'4rem'
+    marginLeft: "4rem",
   },
-  nextButton:{
-float:'right',
-marginRight:'4rem'
+  nextButton: {
+    float: "right",
+    marginRight: "4rem",
   },
   instructions: {
     marginTop: theme.spacing(1),
@@ -118,11 +124,11 @@ marginRight:'4rem'
     color: "white",
     marginTop: "65px",
   },
-  topText:{
-      float:'right',
-      marginRight:'3rem',
-      marginTop:'1.5rem'
-  }
+  topText: {
+    float: "right",
+    marginRight: "3rem",
+    marginTop: "1.5rem",
+  },
 }));
 
 function getSteps() {
@@ -139,36 +145,31 @@ function getStepContent(step) {
     case 0:
       return <BookingStep1 />;
     case 1:
-      return "What is an ad group anyways?";
+      return <BookingStep2 />;
     case 2:
-      return "This is the bit I really care about!";
+      return <BookingStep3/>;
+      case 3:
+      return <BookingStep4/>;
     default:
       return "Unknown step";
   }
 }
 
-export default function CustomizedSteppers() {
+
+export default function CustomizedSteppers(props) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(props.step);
   const steps = getSteps();
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <div>
       <NavBar />
       <div className={classes.topNav}>
-          <p className={classes.topText}>FIND A CAR {" > "} BOOK</p></div>
+        <p className={classes.topText}>FIND A CAR {" > "} BOOK</p>
+      </div>
       <div className={classes.root}>
         <Stepper
           alternativeLabel
@@ -183,7 +184,7 @@ export default function CustomizedSteppers() {
             </Step>
           ))}
         </Stepper>
-        <div>
+        {/* <div>
           {activeStep === steps.length ? (
             <div>
               <Typography className={classes.instructions}>
@@ -198,17 +199,21 @@ export default function CustomizedSteppers() {
               <Typography className={classes.instructions}>
                 {getStepContent(activeStep)}
               </Typography>
-              <div style={{marginTop:'4rem'}}>
+              <div style={{ marginTop: "4rem" }}>
                 <MDBBtn
                   disabled={activeStep === 0}
                   onClick={handleBack}
                   className={classes.button}
                   outline
-                  color='amber'
-                  style={{visibility: activeStep===0?'hidden':'visible'}}
-               
+                  color="amber"
+                  style={{
+                    visibility: activeStep === 0 ? "hidden" : "visible",
+                  }}
                 >
-                    <MDBIcon icon="chevron-left" style={{marginRight:'0.5rem'}}/>
+                  <MDBIcon
+                    icon="chevron-left"
+                    style={{ marginRight: "0.5rem" }}
+                  />
                   Back
                 </MDBBtn>
                 <MDBBtn
@@ -217,14 +222,17 @@ export default function CustomizedSteppers() {
                   onClick={handleNext}
                   className={classes.nextButton}
                 >
-                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                
-                  <MDBIcon icon="chevron-right" style={{marginLeft:'0.5rem'}} />
+                  {activeStep === steps.length - 1 ? "Book now" : "Next"}
+
+                  <MDBIcon
+                    icon="chevron-right"
+                    style={{ marginLeft: "0.5rem" }}
+                  />
                 </MDBBtn>
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
