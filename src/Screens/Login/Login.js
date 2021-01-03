@@ -13,7 +13,7 @@ import "../Login/Login.css";
 
 class Login extends React.Component {
   state={
-  user:{email:'',password:''}
+  user:{userName:'',password:''}
   }
   handleSubmit=async()=>{
    
@@ -22,7 +22,8 @@ class Login extends React.Component {
      .then(response => 
      { 
         if(response.status===200){
-          localStorage.setItem("email",response.data.username)
+          localStorage.setItem("username",response.data.username)
+          localStorage.setItem("token",response.data.token)
           this.props.history.push("/")
       }}
      )
@@ -62,14 +63,14 @@ class Login extends React.Component {
                     <p className="h5 text-center mb-4">Sign in</p>
                     <div className="grey-text">
                       <MDBInput
-                        id="email"
-                        name="email"
-                        label="Type your email"
-                        value={this.state.user.username}
+                        id="userName"
+                        name="userName"
+                        label="Type your username"
+                        value={this.state.user.userName}
                         onChange={this.handleChange}
-                        icon="envelope"
+                        icon="user"
                         group
-                        type="email"
+                        type="text"
                         validate
                         error="wrong"
                         success="right"

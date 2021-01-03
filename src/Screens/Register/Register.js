@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { MDBInput, MDBBtn, MDBAnimation } from "mdbreact";
+import { MDBInput, MDBBtn, MDBAnimation, MDBRow, MDBCol } from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Register/Register.css";
@@ -8,7 +8,7 @@ import axios from 'axios';
 
 class Register extends React.Component {
   state={
-    user:{userName:'',email:'',password:''}
+    user:{userName:'',email:'',password:'',customerName:''}
   }
 
   handleChange=e=>{
@@ -82,12 +82,28 @@ class Register extends React.Component {
                   <form>
                     <p className="h5 text-center mb-4">Sign up</p>
                     <div className="grey-text">
-                      <MDBInput
+                     
+                        <MDBInput
+                        id="customerName"
+                        name="customerName"
+                        value={this.state.user.customerName}
+                        onChange={this.handleChange}
+                        label="Your name"
+                        icon="user"
+                        group
+                        type="text"
+                        validate
+                        error="wrong"
+                        success="right"
+                      />
+                      
+                     
+                       <MDBInput
                         id="userName"
                         name="userName"
                         value={this.state.user.userName}
                         onChange={this.handleChange}
-                        label="Your name"
+                        label="Username"
                         icon="user"
                         group
                         type="text"
@@ -108,15 +124,7 @@ class Register extends React.Component {
                         error="wrong"
                         success="right"
                       />
-                      <MDBInput
-                        label="Confirm your email"
-                        icon="exclamation-triangle"
-                        group
-                        type="text"
-                        validate
-                        error="wrong"
-                        success="right"
-                      />
+                     
                       <MDBInput
                         id="password"
                         name="password"

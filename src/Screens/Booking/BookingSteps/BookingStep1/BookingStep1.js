@@ -4,11 +4,10 @@ import "./BookingStep1.css";
 import { MDBInput } from "mdbreact";
 import moment from "moment";
 import GoogleMapReact from "google-map-react";
-import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
-import { formatDate, parseDate } from "react-day-picker/moment";
 import TextField from "@material-ui/core/TextField";
 import Booking from "../../Booking";
+import { Link } from "react-router-dom";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -19,15 +18,27 @@ class BookingStep1 extends React.Component {
       lng: 30.33,
     },
     zoom: 11,
+    booking: {
+      returnDate: moment().format("YYYY-MM-DD"),
+      returnTime: "18:00",
+      age: 18,
+      pickUpDate: moment().format("YYYY-MM-DD"),
+      pickUpTime: "08:00",
+    },
   };
 
   handleDateChange = (date) => {
     this.setState({ selectedDate: date });
   };
+  handleOnChange = (e) => {
+    const booking = { ...this.state.booking };
+    booking[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ booking });
+  };
   render() {
     return (
       <div>
-        <Booking step={0}/>
+        <Booking step={0} />
         <MDBContainer style={{ marginTop: "3rem" }}>
           <MDBRow>
             <MDBCol md="6" className="outer-container">
@@ -54,22 +65,17 @@ class BookingStep1 extends React.Component {
                         PICKUP DATE
                       </h6>
                       <div>
-                        {/* <DayPickerInput
-              formatDate={formatDate}
-              parseDate={parseDate}
-              placeholder={`${formatDate(new Date())}`}
-           
-           
-            /> */}
                         <TextField
-                          id="date"
+                          id="pickUpDate"
                           type="date"
-                          defaultValue={moment().format("YYYY-MM-DD")}
+                          name="pickUpDate"
                           InputLabelProps={{
                             shrink: true,
                           }}
                           style={{ width: "100%" }}
                           variant="outlined"
+                          value={this.state.booking.pickUpDate}
+                          onChange={this.handleOnChange}
                         />
                       </div>
                     </MDBCol>
@@ -80,9 +86,8 @@ class BookingStep1 extends React.Component {
                       </h6>
                       <form noValidate>
                         <TextField
-                          id="time"
+                          id="pickUpTime"
                           type="time"
-                          defaultValue="08:00"
                           style={{ width: "100%" }}
                           InputLabelProps={{
                             shrink: true,
@@ -91,6 +96,9 @@ class BookingStep1 extends React.Component {
                           inputProps={{
                             step: 300, // 5 min
                           }}
+                          name="pickUpTime"
+                          value={this.state.booking.pickUpTime}
+                          onChange={this.handleOnChange}
                         />
                       </form>
                     </MDBCol>
@@ -121,20 +129,17 @@ class BookingStep1 extends React.Component {
                       <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
                         RETURN DATE
                       </h6>
-                      {/* <DayPickerInput
-              formatDate={formatDate}
-              parseDate={parseDate}
-              placeholder={`${formatDate(new Date())}`}
-            /> */}
                       <TextField
-                        id="date"
+                        id="returnDate"
                         type="date"
-                        defaultValue={moment().format("YYYY-MM-DD")}
                         InputLabelProps={{
                           shrink: true,
                         }}
                         style={{ width: "100%" }}
                         variant="outlined"
+                        name="returnDate"
+                        value={this.state.booking.returnDate}
+                        onChange={this.handleOnChange}
                       />
                     </MDBCol>
                     <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
@@ -143,7 +148,7 @@ class BookingStep1 extends React.Component {
                         RETURN TIME
                       </h6>
                       <TextField
-                        id="time"
+                        id="returnTime"
                         type="time"
                         defaultValue="18:00"
                         style={{ width: "100%" }}
@@ -154,6 +159,10 @@ class BookingStep1 extends React.Component {
                         inputProps={{
                           step: 300, // 5 min
                         }}
+                        name="returnTime"
+                        
+                        value={this.state.booking.returnTime}
+                        onChange={this.handleOnChange}
                       />
                     </MDBCol>
                   </MDBRow>
@@ -174,7 +183,8 @@ class BookingStep1 extends React.Component {
                     </h6>
 
                     <MDBInput
-                      valueDefault="18"
+                    id="age"
+                    name="age"
                       borderColor="red"
                       style={{
                         borderColor: "white",
@@ -184,6 +194,9 @@ class BookingStep1 extends React.Component {
                         marginBottom: "-1rem",
                       }}
                       type="text"
+                      
+                      value={this.state.booking.age}
+                      onChange={this.handleOnChange}
                     />
                   </div>
                 </div>
@@ -205,11 +218,20 @@ class BookingStep1 extends React.Component {
               </GoogleMapReact>
             </MDBCol>
           </MDBRow>
-          <div style={{ marginTop: "4rem", float: "right",marginBottom:'4rem' }}>
-            <MDBBtn variant="contained" color="amber"><a style={{color:"white"}} href="/booking2">
-            select equipment
-            </a>
-              
+          <div
+            style={{ marginTop: "4rem", float: "right", marginBottom: "4rem" }}
+          >
+            <MDBBtn variant="contained" color="amber">
+              <Link
+                style={{ color: "white" }}
+                to={{
+                  pathname: "/booking2",
+                  state: { booking: this.state.booking },
+                }}
+              >
+                select equipment
+              </Link>
+
               <MDBIcon icon="chevron-right" style={{ marginLeft: "0.5rem" }} />
             </MDBBtn>
           </div>

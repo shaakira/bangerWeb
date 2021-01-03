@@ -10,6 +10,7 @@ import Booking1 from "./Screens/Booking/BookingSteps/BookingStep1/BookingStep1";
 import Booking2 from "./Screens/Booking/BookingSteps/BookingStep2/BookingStep2";
 import Booking3 from "./Screens/Booking/BookingSteps/BookingStep3/BookingStep3";
 import Booking4 from "./Screens/Booking/BookingSteps/BookingStep4/BookingStep4";
+import Profile from './Screens/Profile/Profile'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/booking2" component={Booking2} />
         <Route exact path="/booking3" component={Booking3} />
         <Route exact path="/booking4" component={Booking4} />
+        <Route exact path="/profile" component={Profile} />
 
       </Switch>
     </Router>

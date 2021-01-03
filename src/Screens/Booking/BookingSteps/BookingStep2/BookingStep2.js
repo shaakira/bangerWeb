@@ -8,12 +8,28 @@ import Booking from "../../Booking";
 class BookingStep2 extends React.Component {
   state = {
     equipmentList: [],
+    booking:this.props.location.state.booking,
+    days:0,
+    hours:0
   };
   async componentDidMount() {
     const { data: equipmentList } = await axios.get(
       "http://localhost:8080/api/equipment/getAllEquipments"
     );
     this.setState({ equipmentList });
+    const msDiff = new Date(this.state.booking.returnDate)- new Date(this.state.booking.pickUpDate);    //Future date - current date
+    const difDate = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+    this.setState({days:difDate})
+    if(difDate===0){
+      const date=this.state.booking.returnDate+" "+this.state.booking.returnTime;
+      const t=this.state.booking.pickUpDate+" "+this.state.booking.pickUpTime;
+      const timeDiff = new Date(date)- new Date(t);    //Future date - current date
+      const milliseconds = Math.abs(timeDiff);
+      const hours = milliseconds / 36e5;
+      this.setState({hours:hours})
+    }
+
+
 
     //  console.log(this.state.vehicleList);
   }
@@ -46,7 +62,7 @@ class BookingStep2 extends React.Component {
                   <p className="grey-text" style={{ marginTop: "1rem" }}>
                     PICKUP DATE, TIME
                   </p>
-                  <p style={{ fontSize: "0.9rem" }}>20-01-2021, 8:30</p>
+                  <p style={{ fontSize: "0.9rem" }}>{this.state.booking.pickUpDate} , {this.state.booking.pickUpTime}</p>
                   <hr />
                   <p className="grey-text" style={{ marginTop: "1rem" }}>
                     RETURN LOCATION
@@ -64,12 +80,13 @@ class BookingStep2 extends React.Component {
                   <p className="grey-text" style={{ marginTop: "1rem" }}>
                     RETURN DATE, TIME
                   </p>
-                  <p style={{ fontSize: "0.9rem" }}>20-01-2021, 8:30</p>
+                  <p style={{ fontSize: "0.9rem" }}>{this.state.booking.returnDate} , {this.state.booking.returnTime}</p>
                   <hr />
                   <p className="grey-text" style={{ marginTop: "1rem" }}>
                     RENTAL PERIOD
                   </p>
-                  <p style={{ fontSize: "0.9rem" }}>8 days</p>
+                  <p style={{ fontSize: "0.9rem" }}>{this.state.days===0?(<p>{this.state.hours} {this.state.hours===1? "hour":"hours"}</p>
+                    ):(<p>{this.state.days} days</p>)}</p>
                 </div>
                 <div style={{ marginTop: "2rem" }}>
                   <div className="row" style={{ marginLeft: "0.2rem" }}>
