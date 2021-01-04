@@ -169,7 +169,7 @@ class Login extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div style={{backgroundColor:'blue',height:'5rem'}}/> */}
+       
       </section>
     );
   }

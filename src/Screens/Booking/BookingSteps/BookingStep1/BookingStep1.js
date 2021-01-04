@@ -25,6 +25,8 @@ class BookingStep1 extends React.Component {
       pickUpDate: moment().format("YYYY-MM-DD"),
       pickUpTime: "08:00",
     },
+    border:"1px solid white",
+    shadow:"0 1px 0 0 white"
   };
 
   handleDateChange = (date) => {
@@ -35,7 +37,15 @@ class BookingStep1 extends React.Component {
     booking[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ booking });
   };
+  handleFocus=(e)=>{
+    this.setState({border:"1px solid #ffb700",shadow:"0 1px 0 0 #ffb700"})
+  }
+  handleBlur=(e)=>{
+    this.setState({border:"1px solid white",shadow:"0 1px 0 0 white"})
+  }
   render() {
+    const enabled =
+      this.state.booking.age !== "" && this.state.booking.age >= 18;
     return (
       <div>
         <Booking step={0} />
@@ -160,7 +170,6 @@ class BookingStep1 extends React.Component {
                           step: 300, // 5 min
                         }}
                         name="returnTime"
-                        
                         value={this.state.booking.returnTime}
                         onChange={this.handleOnChange}
                       />
@@ -183,20 +192,24 @@ class BookingStep1 extends React.Component {
                     </h6>
 
                     <MDBInput
-                    id="age"
-                    name="age"
-                      borderColor="red"
+                      id="age"
+                      name="age"
+                      
                       style={{
-                        borderColor: "white",
+                        borderBottom: this.state.border,
+                        boxShadow: this.state.shadow,
                         color: "black",
                         fontWeight: "bold",
                         marginTop: "-1.5rem",
                         marginBottom: "-1rem",
                       }}
                       type="text"
-                      
+                      validate
                       value={this.state.booking.age}
                       onChange={this.handleOnChange}
+                      className="age"
+                      onFocus={e=>this.handleFocus(e)}
+                      onBlur={e=>this.handleBlur(e)}
                     />
                   </div>
                 </div>
@@ -221,7 +234,7 @@ class BookingStep1 extends React.Component {
           <div
             style={{ marginTop: "4rem", float: "right", marginBottom: "4rem" }}
           >
-            <MDBBtn variant="contained" color="amber">
+            <MDBBtn variant="contained" color="amber" disabled={!enabled}>
               <Link
                 style={{ color: "white" }}
                 to={{

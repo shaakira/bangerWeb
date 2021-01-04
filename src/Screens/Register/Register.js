@@ -1,33 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { MDBInput, MDBBtn, MDBAnimation, MDBRow, MDBCol } from "mdbreact";
+import { MDBInput, MDBBtn, MDBAnimation } from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Register/Register.css";
-import axios from 'axios';
+import axios from "axios";
 
 class Register extends React.Component {
-  state={
-    user:{userName:'',email:'',password:'',customerName:''}
-  }
+  state = {
+    user: { userName: "", email: "", password: "", customerName: "" },
+    disabled: true,
+  };
 
-  handleChange=e=>{
-    const user={...this.state.user};
-    user[e.currentTarget.name]=e.currentTarget.value;
-    this.setState({user});
-  }
+  handleChange = (e) => {
+    const user = { ...this.state.user };
+    user[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ user });
+  };
 
-  handleSubmit =async()=>{
-  await  axios.post("http://localhost:8080/signUp",this.state.user)
-    .then(response=>{
-      if(response.status===200){
-        console.log("Registered")
-      }
-    })
-    .catch(error=>
-      console.log(error))
-  }
-
+  handleSubmit = async () => {
+      await axios
+      .post("http://localhost:8080/signUp", this.state.user)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Registered");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   render() {
     return (
@@ -51,7 +51,9 @@ class Register extends React.Component {
                       alt=""
                     />
                     <div style={{ marginTop: "-30rem" }}>
-                    <a href="/"><img alt="" src={logo} className="logo-img" /></a>
+                      <a href="/">
+                        <img alt="" src={logo} className="logo-img" />
+                      </a>
                       <h3 className="h2-responsive font-weight-bold">
                         Welcome Back !
                       </h3>
@@ -79,11 +81,13 @@ class Register extends React.Component {
                 }}
               >
                 <MDBAnimation type="slideInLeft">
-                  <form>
+                  <form
+                    className="needs-validation"
+                    onSubmit={this.handleSubmit}
+                  >
                     <p className="h5 text-center mb-4">Sign up</p>
                     <div className="grey-text">
-                     
-                        <MDBInput
+                      <MDBInput
                         id="customerName"
                         name="customerName"
                         value={this.state.user.customerName}
@@ -92,13 +96,10 @@ class Register extends React.Component {
                         icon="user"
                         group
                         type="text"
-                        validate
-                        error="wrong"
-                        success="right"
+                        required
                       />
-                      
-                     
-                       <MDBInput
+
+                      <MDBInput
                         id="userName"
                         name="userName"
                         value={this.state.user.userName}
@@ -107,9 +108,7 @@ class Register extends React.Component {
                         icon="user"
                         group
                         type="text"
-                        validate
-                        error="wrong"
-                        success="right"
+                        required
                       />
                       <MDBInput
                         id="email"
@@ -120,11 +119,8 @@ class Register extends React.Component {
                         icon="envelope"
                         group
                         type="email"
-                        validate
-                        error="wrong"
-                        success="right"
-                      />
-                     
+                        required
+                        />
                       <MDBInput
                         id="password"
                         name="password"
@@ -134,11 +130,13 @@ class Register extends React.Component {
                         icon="lock"
                         group
                         type="password"
-                        validate
-                      />
+                        required
+                        />
                     </div>
-                    <div className="text-center" onClick={e=>this.handleSubmit()}>
-                      <MDBBtn outline color="amber">Register</MDBBtn>
+                    <div className="text-center">
+                      <MDBBtn outline color="amber" type="submit">
+                        Register
+                      </MDBBtn>
                     </div>
                   </form>
                 </MDBAnimation>
