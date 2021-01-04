@@ -8,15 +8,16 @@ import suitcase from "../../Images/suitcase.png";
 import transmission from "../../Images/transmission.png";
 import fuel from "../../Images/petrol.png";
 import "../FleetCard/FleetCard.css";
+import { Link } from "react-router-dom";
+
 
 class FleetCard extends React.Component {
-  vehicle=this.props.data
+  vehicle = this.props.data;
 
-
-componentDidMount(){
-  console.log(this.vehicle)
-}
-  render(){
+  componentDidMount() {
+    console.log(this.vehicle);
+  }
+  render() {
     return (
       <Accordion defaultActiveKey="1">
         <div className="container-style">
@@ -73,51 +74,110 @@ componentDidMount(){
             <div className="price-container  ">
               <h3 className="h1-responsive">£{this.vehicle.price}</h3>
               <p className="h-responsive  my-3 grey-text">
-                £{this.vehicle.price}<span>/ day</span>
+                £{this.vehicle.price}
+                <span>/ day</span>
               </p>
-              <MDBBtn color="amber"><a href={localStorage.getItem("username")===null?"/login":"/booking1"} style={{color:'white'}}>select</a></MDBBtn>
+              <Link
+              to={{
+                pathname: localStorage.getItem("username") === null
+                ? "/login"
+                : "/booking1",
+                state: { vehicle: this.vehicle },
+              }}
+              
+                  style={{ color: "white" }}
+                >
+              <MDBBtn color="amber">
+              
+                  select
+               
+              </MDBBtn>
+              </Link>
             </div>
           </section>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
               <div style={{ marginLeft: "250px" }}>
-                <p>
-                  {this.vehicle.description}
-                </p>
+                <p>{this.vehicle.description}</p>
                 <div>
-                <div className="row" style={{ height: "4rem", flex: 1}}>
-                <div className="column" style={{ flex: 1, height: "4rem" ,fontSize:'0.8rem'}}>
-                  <div className="row img-row" style={{ flex: 1 }}>
-                    <p className="grey-text" style={{ flex: 1 }}>ENGINE</p>
-                    <p style={{ flex: 1,textAlign:'center' }}>{this.vehicle.engine}</p>
+                  <div className="row" style={{ height: "4rem", flex: 1 }}>
+                    <div
+                      className="column"
+                      style={{ flex: 1, height: "4rem", fontSize: "0.8rem" }}
+                    >
+                      <div className="row img-row" style={{ flex: 1 }}>
+                        <p className="grey-text" style={{ flex: 1 }}>
+                          ENGINE
+                        </p>
+                        <p style={{ flex: 1, textAlign: "center" }}>
+                          {this.vehicle.engine}
+                        </p>
+                      </div>
+                      <div style={{ height: "1px", backgroundColor: "gray" }} />
+                    </div>
+                    <div
+                      className="column"
+                      style={{
+                        flex: 1,
+                        height: "4rem",
+                        paddingRight: "40px",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      <div className="row img-row" style={{ flex: 1 }}>
+                        <p className="grey-text" style={{ flex: 1 }}>
+                          AIR CONDITIONING
+                        </p>
+                        <p>{this.vehicle.ac}</p>
+                      </div>
+                      <div
+                        style={{
+                          height: "1px",
+                          backgroundColor: "gray",
+                          marginRight: "-20px",
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div style={{height:'1px',backgroundColor:'gray'}}/>
-                </div>
-                <div className="column" style={{ flex: 1 , height: "4rem",paddingRight:'40px',fontSize:'0.8rem'}}>
-                  <div className="row img-row" style={{ flex: 1 }}>
-                  <p className="grey-text" style={{ flex: 1 }}>AIR CONDITIONING</p>
-                    <p >{this.vehicle.ac}</p>
+                  <div className="row" style={{ height: "4rem", flex: 1 }}>
+                    <div
+                      className="column"
+                      style={{ flex: 1, height: "4rem", fontSize: "0.8rem" }}
+                    >
+                      <div className="row img-row" style={{ flex: 1 }}>
+                        <p className="grey-text" style={{ flex: 1 }}>
+                          DOORS NUMBER
+                        </p>
+                        <p style={{ flex: 1, textAlign: "center" }}>
+                          {this.vehicle.doorCount}
+                        </p>
+                      </div>
+                      <div style={{ height: "1px", backgroundColor: "gray" }} />
+                    </div>
+                    <div
+                      className="column"
+                      style={{
+                        flex: 1,
+                        height: "4rem",
+                        paddingRight: "40px",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      <div className="row img-row" style={{ flex: 1 }}>
+                        <p className="grey-text" style={{ flex: 1 }}>
+                          FUEL
+                        </p>
+                        <p>{this.vehicle.fuelPolicy}</p>
+                      </div>
+                      <div
+                        style={{
+                          height: "1px",
+                          backgroundColor: "gray",
+                          marginRight: "-20px",
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div style={{height:'1px',backgroundColor:'gray',marginRight:'-20px'}}/>
-                </div>
-              </div>
-              <div className="row" style={{ height: "4rem", flex: 1}}>
-                <div className="column" style={{ flex: 1, height: "4rem" ,fontSize:'0.8rem'}}>
-                  <div className="row img-row" style={{ flex: 1 }}>
-                    <p className="grey-text" style={{ flex: 1 }}>DOORS NUMBER</p>
-                    <p style={{ flex: 1,textAlign:'center' }}>{this.vehicle.doorCount}</p>
-                  </div>
-                  <div style={{height:'1px',backgroundColor:'gray'}}/>
-                </div>
-                <div className="column" style={{ flex: 1 , height: "4rem",paddingRight:'40px',fontSize:'0.8rem'}}>
-                  <div className="row img-row" style={{ flex: 1 }}>
-                  <p className="grey-text" style={{ flex: 1 }}>FUEL</p>
-                    <p>{this.vehicle.fuelPolicy}</p>
-                  </div>
-                  <div style={{height:'1px',backgroundColor:'gray',marginRight:'-20px'}}/>
-                </div>
-              </div>
-              
                 </div>
               </div>
             </Card.Body>
@@ -126,6 +186,5 @@ componentDidMount(){
       </Accordion>
     );
   }
- 
-};
+}
 export default FleetCard;

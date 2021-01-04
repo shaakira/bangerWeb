@@ -24,6 +24,7 @@ class BookingStep1 extends React.Component {
       age: 18,
       pickUpDate: moment().format("YYYY-MM-DD"),
       pickUpTime: "08:00",
+      vehicle:this.props.location.state.vehicle
     },
     border:"1px solid white",
     shadow:"0 1px 0 0 white"

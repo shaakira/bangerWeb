@@ -5,25 +5,43 @@ import "../EquipmentCard/EquipmentCard.css";
 class EquipmentCard extends React.Component {
   equipment = this.props.data;
   state={
-    selected: false
+    selected: false,
+    selectedCount:1,
+    data: {}
   };
 
   onSelectBtn=()=>{
     if(this.state.selected===false){
       this.setState({selected:true})
+      this.state.data.id = this.equipment.id
+      this.state.data.count = this.state.selectedCount
+      this.state.data.price=this.equipment.price;
+      this.props.value(this.state.data);
+    
     }
     else{
       this.setState({selected:false})
+      this.state.data.id = this.equipment.id
+      this.state.data.count = null
+      this.state.data.price=0
+      this.props.value(this.state.data);
+    
     }
 
   }
   
+  handleCountSelect=(e)=>{
+    let value=e.target.value;
+    console.log(value)
+    this.setState({selectedCount:value})
+    console.log(this.state.selectedCount)
+  }
 
   render() {
     const items = [];
     const count = this.equipment.count;
     for (let index = 1; index <= count; index++) {
-      items.push(<option>{index}</option>);
+      items.push(index);
     }
     return (
       <div className="outer-card">
@@ -62,10 +80,14 @@ class EquipmentCard extends React.Component {
                 NUMBER
               </h6>
               <select
+              onChange={this.handleCountSelect}
                 className="browser-default custom-select"
                 style={{ border: "solid white", fontWeight: "bold" }}
               >
-                {items}
+               { items.map(item=>
+                  <option value={item}>{item}</option>
+                )
+              }
               </select>
             </div>
           </div>
