@@ -16,6 +16,8 @@ class EquipmentCard extends React.Component {
       this.state.data.id = this.equipment.id
       this.state.data.count = this.state.selectedCount
       this.state.data.price=this.equipment.price;
+      this.state.data.name=this.equipment.name;
+
       this.props.value(this.state.data);
     
     }
@@ -24,6 +26,8 @@ class EquipmentCard extends React.Component {
       this.state.data.id = this.equipment.id
       this.state.data.count = null
       this.state.data.price=0
+      this.state.data.name=null;
+
       this.props.value(this.state.data);
     
     }

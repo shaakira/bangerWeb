@@ -27,7 +27,8 @@ class BookingStep1 extends React.Component {
       vehicle:this.props.location.state.vehicle
     },
     border:"1px solid white",
-    shadow:"0 1px 0 0 white"
+    shadow:"0 1px 0 0 white",
+  
   };
 
   handleDateChange = (date) => {

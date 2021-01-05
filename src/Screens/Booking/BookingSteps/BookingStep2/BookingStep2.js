@@ -17,6 +17,7 @@ class BookingStep2 extends React.Component {
       equipments: [],
       timePeriod: "",
     },
+    vehicle: this.props.location.state.booking.vehicle
   };
   async componentDidMount() {
     const { data: equipmentList } = await axios.get(
@@ -148,7 +149,10 @@ class BookingStep2 extends React.Component {
               style={{ marginTop: "4rem", marginBottom: "4rem" }}
             >
               <div style={{ flex: 1 }}>
-                <a style={{ color: "#ffab00" }} href="/booking1">
+                <Link style={{ color: "#ffab00" }}  to={{
+                    pathname: "/booking1",
+                    state: { vehicle: this.state.vehicle },
+                  }}>
                   <MDBBtn outline color="amber">
                     <MDBIcon
                       icon="chevron-left"
@@ -156,7 +160,7 @@ class BookingStep2 extends React.Component {
                     />
                     Back
                   </MDBBtn>
-                </a>
+                </Link>
               </div>
 
               <div style={{ float: "right" }}>

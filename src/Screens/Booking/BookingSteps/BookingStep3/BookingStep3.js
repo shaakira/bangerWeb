@@ -9,17 +9,38 @@ import {
 } from "mdbreact";
 import "../BookingStep3/BookingStep3.css";
 import Booking from "../../Booking";
+import { Link } from "react-router-dom";
 
 class BookingStep3 extends React.Component {
   state = {
     bookingDetails: this.props.location.state.bookingDetails,
     equipmentAmount: 0,
-    equipmentList: [],
-    Total:0,
-    driver:{firstName:"",lastName:"",email:"",phoneNumber:0,licenseNo:"",nic:""}
+    Total: 0,
+    driver: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      licenseNo: "",
+      nic: "",
+      age: this.props.location.state.bookingDetails.bookingD.age,
+    },
+    bookingSummary: {
+      bookingDetails: "",
+      driver: "",
+      total: 0,
+      equipmentPrice: 0,
+    },
+    booking: {
+      returnDate: "",
+      returnTime: "",
+      age: "",
+      pickUpDate: "",
+      pickUpTime: "08:00",
+      vehicle: "",
+    },
   };
   componentDidMount() {
-    console.log(this.state.bookingDetails.equipments.length);
     let price = 0;
     if (this.state.bookingDetails.equipments.length !== 0) {
       for (let i = 0; i < this.state.bookingDetails.equipments.length; i++) {
@@ -29,13 +50,47 @@ class BookingStep3 extends React.Component {
             this.state.bookingDetails.equipments[i].price;
       }
       this.setState({ equipmentAmount: price });
-      const total=price+this.state.bookingDetails.bookingD.vehicle.price;
-      this.setState({Total:total})
+      const total = price + this.state.bookingDetails.bookingD.vehicle.price;
+      this.setState({ Total: total });
     }
-    console.log(this.state.equipmentAmount);
+    const detail = this.state.bookingDetails.bookingD;
+    this.setState({
+      booking: {
+        returnDate: detail.returnDate,
+        returnTime: detail.returnTime,
+        age: detail.age,
+        pickUpDate: detail.pickUpDate,
+        pickUpTime: detail.pickUpTime,
+        vehicle: detail.vehicle,
+      },
+    });
   }
+  handleChange = (e) => {
+    const driver = { ...this.state.driver };
+    driver[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ driver });
+    this.setState({
+      bookingSummary: {
+        bookingDetails: this.state.bookingDetails,
+        driver: this.state.driver,
+        total: this.state.Total,
+        equipmentPrice: this.state.equipmentAmount,
+      },
+    });
+  };
+  onBtnClick = () => {
+    console.log(this.state.driver);
+  };
   render() {
     const details = this.state.bookingDetails;
+    const driver = this.state.driver;
+    const enabled =
+      driver.firstName !== "" &&
+      driver.lastName !== "" &&
+      driver.email !== "" &&
+      driver.phoneNumber !== "" &&
+      driver.licenseNo !== "" &&
+      driver.nic !== "";
     return (
       <div>
         <Booking step={2} />
@@ -96,7 +151,9 @@ class BookingStep3 extends React.Component {
                 <div style={{ marginTop: "2rem" }}>
                   <div className="row" style={{ marginLeft: "0.2rem" }}>
                     <h6>Selected vehicle</h6>
-                    <p style={{ marginLeft: "5rem" }}>£ {details.bookingD.vehicle.price}</p>
+                    <p style={{ marginLeft: "5rem" }}>
+                      £ {details.bookingD.vehicle.price}
+                    </p>
                   </div>
                   <div
                     className="row"
@@ -133,11 +190,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="text"
+                          name="firstName"
+                          value={this.state.driver.firstName}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                       <div
@@ -152,11 +211,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="text"
+                          name="lastName"
+                          value={this.state.driver.lastName}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                     </MDBRow>
@@ -174,11 +235,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="email"
+                          name="email"
+                          value={this.state.driver.email}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                       <div
@@ -193,11 +256,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="text"
+                          name="phoneNumber"
+                          value={this.state.driver.phoneNumber}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                     </MDBRow>
@@ -215,11 +280,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="text"
+                          name="licenseNo"
+                          value={this.state.driver.licenseNo}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                       <div
@@ -234,11 +301,13 @@ class BookingStep3 extends React.Component {
                           style={{
                             borderColor: "white",
                             color: "black",
-                            fontWeight: "bold",
-                            marginTop: "-2rem",
+                            marginTop: "-1rem",
                             marginBottom: "-1rem",
                           }}
                           type="text"
+                          name="nic"
+                          value={this.state.driver.nic}
+                          onChange={this.handleChange}
                         />
                       </MDBCol>
                     </MDBRow>
@@ -251,7 +320,13 @@ class BookingStep3 extends React.Component {
               style={{ marginTop: "4rem", marginBottom: "4rem" }}
             >
               <div style={{ flex: 1 }}>
-                <a style={{ color: "#ffab00" }} href="/booking2">
+              <Link
+                style={{ color: "#ffab00" }}
+                to={{
+                  pathname: "/booking2",
+                  state: { booking: this.state.booking },
+                }}
+              >
                   <MDBBtn outline color="amber">
                     <MDBIcon
                       icon="chevron-left"
@@ -259,19 +334,25 @@ class BookingStep3 extends React.Component {
                     />
                     Back
                   </MDBBtn>
-                </a>
+               </Link>
               </div>
 
               <div style={{ float: "right" }}>
-                <a style={{ color: "white" }} href="/booking4">
-                  <MDBBtn variant="contained" color="amber">
+                <Link
+                  style={{ color: "white" }}
+                  to={{
+                    pathname: "/booking4",
+                    state: { bookingSummary: this.state.bookingSummary },
+                  }}
+                >
+                  <MDBBtn variant="contained" color="amber" disabled={!enabled}>
                     booking summary
                     <MDBIcon
                       icon="chevron-right"
                       style={{ marginLeft: "0.5rem" }}
                     />
                   </MDBBtn>
-                </a>
+                </Link>
               </div>
             </div>
           </MDBContainer>

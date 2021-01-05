@@ -2,8 +2,24 @@ import React from "react";
 import { MDBContainer, MDBRow, MDBCol,MDBBtn,MDBIcon } from "mdbreact";
 import vehicle from '../../../../Images/car1.jpg'
 import Booking from "../../Booking";
+import { Link } from "react-router-dom";
 class BookingStep4 extends React.Component {
+  state={
+    bookingSummary:this.props.location.state.bookingSummary,
+    bookingDetails: {
+      bookingD: "",
+      equipments: [],
+      timePeriod: "",
+    },
+
+  }
+  componentDidMount(){
+    const details=this.state.bookingSummary.bookingDetails;
+    this.setState({bookingDetails:{ bookingD:details.bookingD,equipments:details.equipments,timePeriod:details.timePeriod}})
+  }
   render() {
+    const detail=this.state.bookingSummary
+    const equipmentList=this.state.bookingSummary.bookingDetails.equipments
     return (
       <div>
             <Booking step={3} />
@@ -21,7 +37,7 @@ class BookingStep4 extends React.Component {
                       FIRST NAME
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" ,textTransform:'capitalize'}}>
-                      shaakira
+                      {detail.driver.firstName}
                     </p>
                   </MDBCol>
                   <MDBCol>
@@ -32,7 +48,7 @@ class BookingStep4 extends React.Component {
                       LAST NAME
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" ,textTransform:'capitalize'}}>
-                     mubarak
+                    {detail.driver.lastName}
                     </p>
                   </MDBCol>
                 </MDBRow>
@@ -44,7 +60,7 @@ class BookingStep4 extends React.Component {
                       EMAIL ADDRESS
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" }}>
-                      shaakira@yahoo.com
+                    {detail.driver.email}
                     </p>
                     <hr style={{marginTop:'-0.2rem'}}/>
                     <p
@@ -54,7 +70,7 @@ class BookingStep4 extends React.Component {
                       PHONE NUMBER
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" }}>
-                      077608444
+                    {detail.driver.phoneNumber}
                     </p>
                     <hr style={{marginTop:'-0.2rem'}}/>
                     <p
@@ -64,7 +80,7 @@ class BookingStep4 extends React.Component {
                      NIC
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" }}>
-                      978012329V
+                    {detail.driver.nic}
                     </p>
                     <hr style={{marginTop:'-0.2rem'}}/>
                     <p
@@ -74,7 +90,7 @@ class BookingStep4 extends React.Component {
                       DRIVING LICENSE
                     </p>
                     <p style={{ fontSize: "0.9rem", marginTop: "-1rem" }}>
-                      7468939
+                    {detail.driver.licenseNo}
                     </p>
               </div>
             </MDBCol>
@@ -99,7 +115,7 @@ class BookingStep4 extends React.Component {
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                   PICKUP DATE, TIME
                 </p>
-                <p style={{ fontSize: "0.9rem" }}>20-01-2021, 8:30</p>
+                <p style={{ fontSize: "0.9rem" }}>{detail.bookingDetails.bookingD.pickUpDate}, {detail.bookingDetails.bookingD.pickUpTime} </p>
                 <hr />
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                   RETURN LOCATION
@@ -117,12 +133,12 @@ class BookingStep4 extends React.Component {
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                   RETURN DATE, TIME
                 </p>
-                <p style={{ fontSize: "0.9rem" }}>20-01-2021, 8:30</p>
+                <p style={{ fontSize: "0.9rem" }}>{detail.bookingDetails.bookingD.returnDate}, {detail.bookingDetails.bookingD.returnTime}</p>
                 <hr />
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                   RENTAL PERIOD
                 </p>
-                <p style={{ fontSize: "0.9rem" }}>8 days</p>
+                <p style={{ fontSize: "0.9rem" }}>{detail.bookingDetails.timePeriod}</p>
               </div>
             </MDBCol>
             <MDBCol md="4" style={{ padding:'2rem' }}>
@@ -134,35 +150,44 @@ class BookingStep4 extends React.Component {
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                   VEHICLE
                 </p>
-                <p style={{ fontSize: "0.9rem" }}>
-               Audi
+                <p style={{ fontSize: "0.9rem" ,textTransform:"capitalize"}}>
+                {detail.bookingDetails.bookingD.vehicle.name}
                 </p>
                 <hr />
                 <p className="grey-text" style={{ marginTop: "1rem", fontSize: "0.8rem" }}>
                  EXTRA EQUIPMENT
                 </p>
-                <p style={{ fontSize: "0.9rem" }}>1 x Baby seat - £ 10</p>
+                {equipmentList.map((equipment) => (
+                 <p style={{ fontSize: "0.9rem" }}>{equipment.count} x {equipment.name} - £ {equipment.price}</p>
+                ))}
+                
             </div>
             <div style={{ marginTop: "5rem" }}>
                 <div className="row" style={{ marginLeft: "0.2rem" }}>
                   <h6>Selected vehicle</h6>
-                  <p style={{ marginLeft: "5rem" }}>£ 0.00</p>
+                  <p style={{ marginLeft: "5rem" }}>£  {detail.bookingDetails.bookingD.vehicle.price}</p>
                 </div>
                 <div className="row" style={{ marginLeft: "0.2rem" ,marginTop:'-1rem'}}>
                   <h6>Extra equipments</h6>
-                  <p style={{ marginLeft: "4.3rem" }}>£ 0.00</p>
+                  <p style={{ marginLeft: "4.3rem" }}>£ {detail.equipmentPrice}</p>
                 </div>
                 <hr color="black" />
                 <div className="row" style={{ marginLeft: "0.2rem" }}>
                   <p>Total</p>
-                  <p style={{ marginLeft: "10rem" }}>£ 0.00</p>
+                  <p style={{ marginLeft: "10rem" }}>£ {detail.total}</p>
                 </div>
               </div>
             </MDBCol>
           </MDBRow>
           <div className="row" style={{ marginTop: "4rem" ,marginBottom:'4rem'}}>
               <div style={{ flex: 1 }}>
-                <a style={{ color: "#ffab00" }} href="/booking3">
+              <Link
+                  style={{ color: "#ffb700" }}
+                  to={{
+                    pathname: "/booking3",
+                    state: { bookingDetails: this.state.bookingDetails },
+                  }}
+                >
                   <MDBBtn outline color="amber">
                     <MDBIcon
                       icon="chevron-left"
@@ -170,7 +195,7 @@ class BookingStep4 extends React.Component {
                     />
                     Back
                   </MDBBtn>
-                </a>
+                </Link>
               </div>
 
               <div style={{ float: "right" }}>
