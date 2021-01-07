@@ -1,0 +1,33 @@
+.nv-style{
+width: 250px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+height:100vh;
+color:black;
+background-color: #ffb700;
+}
+.img-stl{
+    width:130px;
+    text-align: center;
+    margin-left: 50px;
+    
+}
+.nav-itm{
+    background-color: #ffb700;
+    color: rgb(58, 58, 58);
+    font-size: small;
+}
+.div-stl{
+    position: relative; 
+                top: 80px; 
+                background-color:rgb(58, 58, 58);
+                margin-left: 20px;
+                margin-right: 180px;
+}
+.bottom_con{
+    position: relative; 
+    top: 100px;
+    margin-left: 20px;
+    font-size: small; 
+    color: rgb(88, 88, 88);
+
+}

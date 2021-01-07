@@ -174,7 +174,7 @@ class NavBar extends React.Component {
                             <a href="/profile" style={{ color: "black" }}>
                               PROFILE
                             </a>
-                            <a href="#" style={{ color: "black" }}>
+                            <a href="/myBookings" style={{ color: "black" }}>
                               MY BOOKINGS
                             </a>
                             <a  href="/"style={{ color: "black" }} onClick={this.handleLogout}>

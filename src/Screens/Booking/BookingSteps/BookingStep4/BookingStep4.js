@@ -199,7 +199,7 @@ class BookingStep4 extends React.Component {
               </div>
 
               <div style={{ float: "right" }}>
-                <a style={{ color: "white" }} href="">
+              
                   <MDBBtn variant="contained" color="amber">
                     book now
                     <MDBIcon
@@ -207,7 +207,7 @@ class BookingStep4 extends React.Component {
                       style={{ marginLeft: "0.5rem" }}
                     />
                   </MDBBtn>
-                </a>
+             
               </div>
             </div>
         </MDBContainer>

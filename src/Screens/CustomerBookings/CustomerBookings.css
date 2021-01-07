@@ -1,0 +1,28 @@
+.booking-cont{
+    margin: 4rem;
+    margin-top: 8rem;
+}
+.row-cont{
+    height: 250px;
+}
+.left-conts{
+background-color: "#ffb700";
+}
+.right-cont{
+    margin: 0.5rem;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+    text-align: center;
+}
+.dot {
+    height: 70px;
+    width: 70px;
+    background-color: rgb(231, 230, 230);
+    border-radius: 50%;
+    display: inline-block;
+    color: white;
+    font-size:xx-large;
+    padding-top: 10px;
+  }

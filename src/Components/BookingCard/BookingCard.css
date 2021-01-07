@@ -1,0 +1,29 @@
+.dot-round {
+    height: 100px;
+    width: 100px;
+    background-color:#E6E4E4;
+    border-radius: 50%;
+    display: inline-block;
+    color: white;
+    font-size:xx-large;
+    padding-top: 10px;
+    margin-top: 10px;
+    z-index: 10;
+    text-align: center;
+  }
+  .bottom-cont{
+      margin-top: -0.9rem;
+      margin-left: 6rem;
+      margin-right: 4rem;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+  }
+  input:invalid+span:after {
+    position: absolute;
+    content: '* Invalid  time';
+    padding-left: 5px;
+    color: #c70404;
+    font-size: small;
+    padding-top: 5px;
+  }
+  

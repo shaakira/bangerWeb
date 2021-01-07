@@ -11,6 +11,11 @@ import Booking2 from "./Screens/Booking/BookingSteps/BookingStep2/BookingStep2";
 import Booking3 from "./Screens/Booking/BookingSteps/BookingStep3/BookingStep3";
 import Booking4 from "./Screens/Booking/BookingSteps/BookingStep4/BookingStep4";
 import Profile from './Screens/Profile/Profile'
+import UpcomingBookings from "./Screens/MyBookings/UpcomingBookings/UpcomingBookings";
+import PastBookings from "./Screens/MyBookings/PastBookings/PastBookings";
+import DashBoard from "./Screens/Admin/DashBoard/DashBoard";
+import ContactNotification from "./Screens/Admin/ContactNotification/ContactNotification";
+import AdminProfile from "./Screens/Admin/AdminProfile/AdminProfile";
 
 
 function App() {
@@ -28,6 +33,16 @@ function App() {
         <Route exact path="/booking3" component={Booking3} />
         <Route exact path="/booking4" component={Booking4} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/myBookings" component={UpcomingBookings} />
+        <Route exact path="/pastBookings" component={PastBookings} />
+        <Route exact path="/dashboard" component={DashBoard} />
+        <Route exact path="/adminContact" component={ContactNotification} />
+        <Route exact path="/adminProfile" component={AdminProfile} />
+
+
+
+
+        
 
       </Switch>
     </Router>

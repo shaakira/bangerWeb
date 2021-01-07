@@ -1,3 +1,4 @@
+/* eslint-disable react/no-direct-mutation-state */
 import { MDBBtn , MDBIcon} from "mdbreact";
 import React from "react";
 import "../EquipmentCard/EquipmentCard.css";
