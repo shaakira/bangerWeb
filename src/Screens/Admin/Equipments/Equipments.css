@@ -1,0 +1,15 @@
+.header-box{
+    margin-top: -3rem;
+    background-color: #ffb700;
+    width: 120px;
+    padding: 0.8rem;
+    border: 3px solid #ffb700;
+    color: white;
+   text-align: center;
+
+
+}
+.btn-cont{
+    float: right;
+    margin-top: -2rem;
+}

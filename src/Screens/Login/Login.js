@@ -1,49 +1,52 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import axios from 'axios';
-import {
-  MDBInput,
-  MDBBtn,
-  MDBAnimation,
-  MDBIcon,
-} from "mdbreact";
+import axios from "axios";
+import { MDBInput, MDBBtn, MDBAnimation, MDBIcon } from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Login/Login.css";
 
 class Login extends React.Component {
-  state={
-  user:{userName:'',password:''}
-  }
-  handleSubmit=async()=>{
-   
+  state = {
+    user: { userName: "", password: "" },
+  };
+  handleSubmit = async () => {
     //Calling the back end endpoints
-    await axios.post("http://localhost:8080/authenticate",this.state.user)
-     .then(response => 
-     { 
-        if(response.status===200){
-          localStorage.setItem("username",response.data.username)
-          localStorage.setItem("token",response.data.token)
-          this.props.history.push("/")
-      }}
-     )
-    .catch(error => 
-    { if(error.response.status===401){
-      console.log("user Credentials Wrong")
-     }
-    });
-  } 
-    
+    await axios
+      .post("http://localhost:8080/authenticate", this.state.user)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data)
+          var status = response.data.status;
+          var role = response.data.roles[0];
+          if (status === "active") {
+            localStorage.setItem("username", response.data.username);
+            localStorage.setItem("token", response.data.token);
 
-  
+            if (role === "ROLE_CUSTOMER") {
+              this.props.history.push("/");
+            } else if (role === "ROLE_ADMIN") {
+              this.props.history.push("/dashboard");
+            }
+          } else {
+            this.props.history.push("/blacklist");
+          }
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          console.log("user Credentials Wrong");
+        }
+      });
+  };
 
-  handleChange=e=>{
+  handleChange = (e) => {
     //console.log("test change")
-    const user ={...this.state.user};
-    user[e.currentTarget.name]=e.currentTarget.value;
-    this.setState({user});
+    const user = { ...this.state.user };
+    user[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ user });
     // console.log(JSON.stringify(user))
-  }
+  };
   render() {
     return (
       <section>
@@ -74,7 +77,6 @@ class Login extends React.Component {
                         validate
                         error="wrong"
                         success="right"
-                        
                       />
                       <MDBInput
                         id="password"
@@ -89,8 +91,11 @@ class Login extends React.Component {
                       />
                     </div>
                     <div className="text-center">
-                      <MDBBtn outline color="amber"
-                      onClick={e=>this.handleSubmit()}>
+                      <MDBBtn
+                        outline
+                        color="amber"
+                        onClick={(e) => this.handleSubmit()}
+                      >
                         Login
                       </MDBBtn>
                     </div>
@@ -169,7 +174,6 @@ class Login extends React.Component {
             </div>
           </div>
         </div>
-       
       </section>
     );
   }

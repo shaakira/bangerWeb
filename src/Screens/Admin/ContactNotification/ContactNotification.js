@@ -49,7 +49,7 @@ class ContactNotification extends React.Component {
             <MDBTable striped bordered>
               <MDBTableHead style={{ textAlign: "center" }}>
                 <tr>
-                  <th>#</th>
+                  <th>ID</th>
                   <th>NAME</th>
                   <th>EMAIL</th>
                   <th>MESSAGE</th>

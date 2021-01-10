@@ -77,13 +77,13 @@ class SideNav extends React.Component {
                 VEHICLES
               </MDBListGroupItem>
             </NavLink>
-            <NavLink to="/maps" activeClassName="activeClass">
+            <NavLink to="/equipments" activeClassName="activeClass">
               <MDBListGroupItem
                 className="nav-itm"
                 style={{
                   backgroundColor: "#ffb700",
                   color:
-                    this.props.active === "equipment"
+                    this.props.active === "equipments"
                       ? "white"
                       : "rgb(58, 58, 58)",
                 }}
@@ -92,7 +92,7 @@ class SideNav extends React.Component {
                 EQUIPMENT
               </MDBListGroupItem>
             </NavLink>
-            <NavLink to="/404" activeClassName="activeClass">
+            <NavLink to="/users" activeClassName="activeClass">
               <MDBListGroupItem
                 className="nav-itm"
                 style={{

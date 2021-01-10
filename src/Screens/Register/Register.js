@@ -23,13 +23,18 @@ class Register extends React.Component {
       .post("http://localhost:8080/signUp", this.state.user)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Registered");
+          localStorage.setItem("username", response.data.username);
+          localStorage.setItem("token", response.data.token);
+          this.props.history.push("/");
+
         }
       })
       .catch((error) => console.log(error));
   };
 
   render() {
+    const user=this.state.user;
+    const disabled=user.userName===""&&user.email===""&&user.customerName===""&&user.password==="";
     return (
       <section>
         <div className="div-styles">
@@ -83,7 +88,7 @@ class Register extends React.Component {
                 <MDBAnimation type="slideInLeft">
                   <form
                     className="needs-validation"
-                    onSubmit={this.handleSubmit}
+                    // onSubmit={this.handleSubmit}
                   >
                     <p className="h5 text-center mb-4">Sign up</p>
                     <div className="grey-text">
@@ -134,7 +139,9 @@ class Register extends React.Component {
                         />
                     </div>
                     <div className="text-center">
-                      <MDBBtn outline color="amber" type="submit">
+                      <MDBBtn outline color="amber" disabled={disabled}
+                      onClick={this.handleSubmit}
+                      >
                         Register
                       </MDBBtn>
                     </div>

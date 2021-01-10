@@ -10,13 +10,15 @@ import Booking1 from "./Screens/Booking/BookingSteps/BookingStep1/BookingStep1";
 import Booking2 from "./Screens/Booking/BookingSteps/BookingStep2/BookingStep2";
 import Booking3 from "./Screens/Booking/BookingSteps/BookingStep3/BookingStep3";
 import Booking4 from "./Screens/Booking/BookingSteps/BookingStep4/BookingStep4";
-import Profile from './Screens/Profile/Profile'
+import Profile from "./Screens/Profile/Profile";
 import UpcomingBookings from "./Screens/MyBookings/UpcomingBookings/UpcomingBookings";
 import PastBookings from "./Screens/MyBookings/PastBookings/PastBookings";
 import DashBoard from "./Screens/Admin/DashBoard/DashBoard";
 import ContactNotification from "./Screens/Admin/ContactNotification/ContactNotification";
 import AdminProfile from "./Screens/Admin/AdminProfile/AdminProfile";
-
+import Blacklist from "./Screens/Blacklist/Blacklist";
+import User from "./Screens/Admin/Users/Users";
+import Equipments from "./Screens/Admin/Equipments/Equipments";
 
 function App() {
   return (
@@ -38,12 +40,9 @@ function App() {
         <Route exact path="/dashboard" component={DashBoard} />
         <Route exact path="/adminContact" component={ContactNotification} />
         <Route exact path="/adminProfile" component={AdminProfile} />
-
-
-
-
-        
-
+        <Route exact path="/blacklist" component={Blacklist} />
+        <Route exact path="/users" component={User} />
+        <Route exact path="/equipments" component={Equipments} />
       </Switch>
     </Router>
   );
