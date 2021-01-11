@@ -3,7 +3,9 @@ import { MDBContainer, MDBRow, MDBCol,MDBBtn,MDBIcon } from "mdbreact";
 import vehicle from '../../../../Images/car1.jpg'
 import Booking from "../../Booking";
 import { Link } from "react-router-dom";
+import axios from "axios";
 class BookingStep4 extends React.Component {
+
   state={
     bookingSummary:this.props.location.state.bookingSummary,
     bookingDetails: {
@@ -11,12 +13,64 @@ class BookingStep4 extends React.Component {
       equipments: [],
       timePeriod: "",
     },
+    booking:{
+      age:"",
+      pickUpDate:"",
+      returnDate:"",
+      pickUpTime:"",
+      returnTime:"",
+      vehicleID:"",
+      timePeriod:"",
+      userName:"",
+      driver:{},
+      equipment:[],
+      total:""
+    }
 
   }
   componentDidMount(){
+    console.log("");
     const details=this.state.bookingSummary.bookingDetails;
+    const driver=this.state.bookingSummary.driver;
+    const vehicle=this.state.bookingSummary.bookingDetails.bookingD.vehicle;
+    const request=this.state.bookingSummary.bookingDetails.bookingD;
     this.setState({bookingDetails:{ bookingD:details.bookingD,equipments:details.equipments,timePeriod:details.timePeriod}})
+    this.setState({booking:{
+    age:details.bookingD.age,
+      total:request.total,
+    pickUpDate:request.pickUpDate,
+    pickUpTime:request.pickUpTime,
+    returnDate:request.returnDate,
+    returnTime:request.returnTime,
+    vehicleId:vehicle.id,
+    timePeriod:details.timePeriod,
+    userName:localStorage.getItem("username"),
+    driver:driver,
+    equipment:details.equipments,
+    total:this.state.bookingSummary.total
+    }})
   }
+
+  handleSubmit= async () => {
+console.log(this.state.bookingSummary)
+    let token = localStorage.getItem("token");
+    await axios
+      .post(`http://localhost:8080/api/booking/addBooking`,this.state.booking, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          this.setState({ user: res.data });
+        }
+      })  
+      .catch((error) => { 
+        console.log(error.response.data.message);  
+        });
+
+  }
+
+
   render() {
     const detail=this.state.bookingSummary
     const equipmentList=this.state.bookingSummary.bookingDetails.equipments
@@ -165,7 +219,7 @@ class BookingStep4 extends React.Component {
             <div style={{ marginTop: "5rem" }}>
                 <div className="row" style={{ marginLeft: "0.2rem" }}>
                   <h6>Selected vehicle</h6>
-                  <p style={{ marginLeft: "5rem" }}>£  {detail.bookingDetails.bookingD.vehicle.price}</p>
+                  <p style={{ marginLeft: "5rem" }}>£  {detail.bookingDetails.total}</p>
                 </div>
                 <div className="row" style={{ marginLeft: "0.2rem" ,marginTop:'-1rem'}}>
                   <h6>Extra equipments</h6>
@@ -199,15 +253,15 @@ class BookingStep4 extends React.Component {
               </div>
 
               <div style={{ float: "right" }}>
-              
-                  <MDBBtn variant="contained" color="amber">
+                {/* <a style={{ color: "white" }} href=""> */}
+                  <MDBBtn onClick={this.handleSubmit} variant="contained" color="amber">
                     book now
                     <MDBIcon
                       icon="chevron-right"
                       style={{ marginLeft: "0.5rem" }}
                     />
                   </MDBBtn>
-             
+                {/* </a> */}
               </div>
             </div>
         </MDBContainer>
