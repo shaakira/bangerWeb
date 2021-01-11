@@ -47,7 +47,7 @@ class SideNav extends React.Component {
                 PROFILE
               </MDBListGroupItem>
             </NavLink>
-            <NavLink to="/tables" activeClassName="activeClass">
+            <NavLink to="/bookings" activeClassName="activeClass">
               <MDBListGroupItem
                 className="nav-itm"
                 style={{
