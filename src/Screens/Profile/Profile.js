@@ -18,24 +18,27 @@ import Footer from "../../Components/Footer/Footer";
 class Profile extends React.Component {
   state = {
     user: { customerName: "", email: "" },
+    document: { license: undefined, utility: undefined },
     username: localStorage.getItem("username"),
     modalVisibility: false,
     deleteText: "",
     show: false,
     showDanger: false,
-    passwordUser:{password:""},
-    confirmPassword:"",
-    showPwdDanger:false,
-    showPwdSuccess:false,
+    passwordUser: { password: "" },
+    confirmPassword: "",
+    showPwdDanger: false,
+    showPwdSuccess: false,
   };
   async componentDidMount() {
     let token = localStorage.getItem("token");
+    console.log("asdad");
     await axios
       .get(`http://localhost:8080/api/user/getUser/${this.state.username}`, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
           this.setState({ user: res.data });
         }
       });
@@ -46,14 +49,14 @@ class Profile extends React.Component {
     user[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ user });
   };
-  handlePasswordChange=(e)=>{
-    const passwordUser={...this.state.passwordUser};
-    passwordUser[e.currentTarget.name]=e.currentTarget.value;
-    this.setState({passwordUser});
-  }
-  handleConfirmPasswordChange=(e)=>{
+  handlePasswordChange = (e) => {
+    const passwordUser = { ...this.state.passwordUser };
+    passwordUser[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ passwordUser });
+  };
+  handleConfirmPasswordChange = (e) => {
     this.setState({ confirmPassword: e.target.value });
-  }
+  };
   handleDeleteChange = (e) => {
     this.setState({ deleteText: e.target.value });
   };
@@ -92,8 +95,35 @@ class Profile extends React.Component {
       });
     console.log(this.state.user);
   };
-  onUpdatePasswordClick= async()=>{
-    if(this.state.confirmPassword===this.state.passwordUser.password){
+
+  handleUpdateDocuments = async () => {
+    let token = localStorage.getItem("token");
+
+    var username = localStorage.getItem("username");
+    const formData = new FormData();
+    formData.append("files", this.state.document.license);
+    formData.append("files", this.state.document.utility);
+    formData.append("extra", "estra metadata");
+    formData.append("username", username);
+
+    await axios
+      .post(`http://localhost:8080/api/user/updateDocuments`, formData, {
+        headers: { Authorization: "Bearer " + token },
+        "Content-Type": "multipart/form-data",
+      })
+      .then((res) => {
+        if (res.status === 200) {
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // for(let i = 0; i< e.target.files.length; i++) {
+    //   formData.append('file', e.target.files[i])
+  };
+  onUpdatePasswordClick = async () => {
+    if (this.state.confirmPassword === this.state.passwordUser.password) {
       let token = localStorage.getItem("token");
       console.log(token);
       await axios
@@ -105,24 +135,58 @@ class Profile extends React.Component {
           }
         )
         .then((res) => {
-          if (res.status === 200) {this.setState({showPwdSuccess:true,passwordUser:{password:""},confirmPassword:""});
+          if (res.status === 200) {
+            this.setState({
+              showPwdSuccess: true,
+              passwordUser: { password: "" },
+              confirmPassword: "",
+            });
           }
         });
-     
-     
-    }else{
-
-      this.setState({showPwdDanger:true});
-     this.setState({showPwdSuccess:true,passwordUser:{password:""},confirmPassword:""});
-
-
+    } else {
+      this.setState({ showPwdDanger: true });
+      this.setState({
+        showPwdSuccess: true,
+        passwordUser: { password: "" },
+        confirmPassword: "",
+      });
     }
-  }
+  };
+  onlicenseChangeHandler = (e) => {
+    const document = { ...this.state.document };
+    //  console.log(e.target.files[0])
+    document[e.currentTarget.name] = e.target.files[0];
+
+    this.setState({ document });
+    // this.setState({
+    //     selectedFile: e.target.files[0]
+    // });
+    // const formData = new FormData();
+    // console.log(this.state.document)
+    // formData.append('file', this.state.document.license);
+    // console.log(formData)
+  };
+
+  // onUtilityChangeHandler = (e) => {
+  //   const document ={...this.state.document};
+  //   document[e.currentTarget.name]=e.target.files[0];
+
+  //   this.setState({document});
+  //   // e.preventDefault();
+  //   // this.setState({
+  //   //     selectedFile: e.target.files[0]
+  //   // });
+  //   // const formData = new FormData();
+  //   // formData.append('file', this.state.selectedFile);
+
+  // };
   render() {
     const enabled =
       this.state.user.customerName !== "" && this.state.user.email !== "";
     const dlteEnabled = this.state.deleteText !== "";
-    const pwdEnabled= this.state.passwordUser.password !== "" && this.state.confirmPassword!=="";
+    const pwdEnabled =
+      this.state.passwordUser.password !== "" &&
+      this.state.confirmPassword !== "";
     return (
       <div>
         <NavBar active="profile" />
@@ -194,12 +258,115 @@ class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <Alert variant="success" onClose={() => {this.setState({show:false})}} dismissible show={this.state.show}>
-        <Alert.Heading>Success</Alert.Heading>
-        <p>{this.state.username}, 
-         your email and name updated successfully.
-        </p>
-      </Alert>
+          <Alert
+            variant="success"
+            onClose={() => {
+              this.setState({ show: false });
+            }}
+            dismissible
+            show={this.state.show}
+          >
+            <Alert.Heading>Success</Alert.Heading>
+            <p>
+              {this.state.username}, your email and name updated successfully.
+            </p>
+          </Alert>
+          <hr />
+          <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+            <div className="header-container">
+              <p>YOUR DOCUMENTS</p>
+            </div>
+            <div className="cont">
+              <div className="out-cont">
+                <form>
+                  <MDBRow style={{ marginTop: "2rem" }}>
+                    <MDBCol md="4">
+                      <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
+                        License Picture
+                      </h6>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group files color">
+                              <label>Upload Your File </label>
+                              <input
+                                type="file"
+                                className="form-control"
+                                name="license"
+                                onChange={this.onlicenseChangeHandler}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <MDBInput
+                        borderColor="red"
+                        style={{
+                          borderColor: "white",
+                          color: "black",
+                          marginTop: "-1rem",
+                          marginBottom: "-1rem",
+                        }}
+                        type="text"
+                        id="email"
+                        name="email"
+                        value={this.state.user.email}
+                        onChange={this.handleChange}
+                      /> */}
+                    </MDBCol>
+
+                    <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
+
+                    <MDBCol md="4">
+                      <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
+                        Utility Picture
+                      </h6>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group files color">
+                              <label>Upload Your File </label>
+                              <input
+                                type="file"
+                                className="form-control"
+                                name="utility"
+                                onChange={this.onlicenseChangeHandler}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <MDBInput
+                        borderColor="red"
+                        style={{
+                          borderColor: "white",
+                          color: "black",
+                          marginTop: "-1rem",
+                          marginBottom: "-1rem",
+                        }}
+                        type="text"
+                        id="customerName"
+                        name="customerName"
+                        value={this.state.user.customerName}
+                        onChange={this.handleChange}
+                      /> */}
+                    </MDBCol>
+
+                    <div style={{ float: "right", marginLeft: "11rem" }}>
+                      <MDBBtn
+                        color="black"
+                        outline
+                        onClick={this.handleUpdateDocuments}
+                        disabled={!enabled}
+                      >
+                        Update Documents
+                      </MDBBtn>
+                    </div>
+                  </MDBRow>
+                </form>
+              </div>
+            </div>
+          </div>
           <hr />
           <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
             <div className="header-container">
@@ -207,55 +374,58 @@ class Profile extends React.Component {
             </div>
             <div className="cont">
               <div className="out-cont">
-               
-                  <MDBRow style={{ marginTop: "2rem" }}>
-                    <MDBCol md="4">
-                      <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
-                        NEW PASSWORD
-                      </h6>
-                      <MDBInput
-                        borderColor="red"
-                        style={{
-                          borderColor: "white",
-                          color: "black",
-                          marginTop: "-1rem",
-                          marginBottom: "-1rem",
-                        }}
-                        type="password"
-                        value={this.state.passwordUser.password}
-                        onChange={this.handlePasswordChange}
-                        name="password"
-                      />
-                    </MDBCol>
+                <MDBRow style={{ marginTop: "2rem" }}>
+                  <MDBCol md="4">
+                    <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
+                      NEW PASSWORD
+                    </h6>
+                    <MDBInput
+                      borderColor="red"
+                      style={{
+                        borderColor: "white",
+                        color: "black",
+                        marginTop: "-1rem",
+                        marginBottom: "-1rem",
+                      }}
+                      type="password"
+                      value={this.state.passwordUser.password}
+                      onChange={this.handlePasswordChange}
+                      name="password"
+                    />
+                  </MDBCol>
 
-                    <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
+                  <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
 
-                    <MDBCol md="4">
-                      <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
-                        CONFIRM NEW PASSWORD
-                      </h6>
-                      <MDBInput
-                        borderColor="red"
-                        style={{
-                          borderColor: "white",
-                          color: "black",
-                          marginTop: "-1rem",
-                          marginBottom: "-1rem",
-                        }}
-                        type="password"
-                        name="confirmPassword"
-                        value={this.state.confirmPassword}
-                        onChange={this.handleConfirmPasswordChange}
-                      />
-                    </MDBCol>
+                  <MDBCol md="4">
+                    <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
+                      CONFIRM NEW PASSWORD
+                    </h6>
+                    <MDBInput
+                      borderColor="red"
+                      style={{
+                        borderColor: "white",
+                        color: "black",
+                        marginTop: "-1rem",
+                        marginBottom: "-1rem",
+                      }}
+                      type="password"
+                      name="confirmPassword"
+                      value={this.state.confirmPassword}
+                      onChange={this.handleConfirmPasswordChange}
+                    />
+                  </MDBCol>
 
-                    <div style={{ float: "right", marginLeft: "9rem" }}>
-                      <MDBBtn color="black" outline disabled={!pwdEnabled} onClick={this.onUpdatePasswordClick}>
-                        Update password
-                      </MDBBtn>
-                    </div>
-                  </MDBRow>
-               
+                  <div style={{ float: "right", marginLeft: "9rem" }}>
+                    <MDBBtn
+                      color="black"
+                      outline
+                      disabled={!pwdEnabled}
+                      onClick={this.onUpdatePasswordClick}
+                    >
+                      Update password
+                    </MDBBtn>
+                  </div>
+                </MDBRow>
               </div>
             </div>
           </div>
@@ -269,12 +439,17 @@ class Profile extends React.Component {
           >
             <p>Please make sure your passwords match.</p>
           </Alert>
-          <Alert variant="success" onClose={() => {this.setState({showPwdSuccess:false})}} dismissible show={this.state.showPwdSuccess}>
-        <Alert.Heading>Success</Alert.Heading>
-        <p>{this.state.username}, 
-         your password updated successfully.
-        </p>
-      </Alert>
+          <Alert
+            variant="success"
+            onClose={() => {
+              this.setState({ showPwdSuccess: false });
+            }}
+            dismissible
+            show={this.state.showPwdSuccess}
+          >
+            <Alert.Heading>Success</Alert.Heading>
+            <p>{this.state.username}, your password updated successfully.</p>
+          </Alert>
           <hr />
           <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
             <div className="pro-header-container">

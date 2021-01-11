@@ -53,20 +53,7 @@ class Compare extends React.Component {
     }
     console.log(this.state.newList);
   }
-  compare = () => {
-    const their = this.state.list;
-    const our = this.state.vehicleList;
 
-    for (let i = 0; i < their.length; i++) {
-      for (let j = 0; j < our.length; j++) {
-        if (their[i].vehicleName === our[j].name) {
-          this.setState({ compare: { name: their[i].vehicleName } });
-          this.setState({ newList: [...this.state.newList, this.compare] });
-        }
-      }
-    }
-    console.log(this.state.vehicleList);
-  };
   render() {
     return (
       <div>
