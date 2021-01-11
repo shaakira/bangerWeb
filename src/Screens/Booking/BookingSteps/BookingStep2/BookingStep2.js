@@ -12,10 +12,12 @@ class BookingStep2 extends React.Component {
     booking: this.props.location.state.booking,
     data: [],
     period: "",
+    total:"",
     bookingDetails: {
       bookingD: "",
       equipments: [],
       timePeriod: "",
+      total:"",
     },
     vehicle: this.props.location.state.booking.vehicle
   };
@@ -26,16 +28,25 @@ class BookingStep2 extends React.Component {
     this.setState({ equipmentList });
     const msDiff =
       new Date(this.state.booking.returnDate) -
-      new Date(this.state.booking.pickUpDate); //Future date - current date
-    const difDate = Math.floor(msDiff / (1000 * 60 * 60 * 24));
-    if (difDate >= 1) {
-      this.setState({ period: difDate + " days" });
+      new Date(this.state.booking.pickUpDate); 
+      //Future date - current date
+  
+      const difDate = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+      
+  
+    
+      if (difDate >= 1) {
+        var total=difDate*this.state.booking.vehicle.price;
+      this.setState({ period: difDate + " days" ,total:total});
+
     }
     if (difDate === 1) {
-      this.setState({ period: difDate + " day" });
+      var totals=difDate*this.state.booking.vehicle.price;
+      this.setState({ period: difDate + " day" ,total:totals});
     }
 
     if (difDate === 0) {
+      this.setState({total:this.state.booking.vehicle.price})
       const date =
         this.state.booking.returnDate + " " + this.state.booking.returnTime;
       const t =
@@ -50,7 +61,7 @@ class BookingStep2 extends React.Component {
         this.setState({ period: hours + " hour" });
       }
     }
-    this.setState({ bookingDetails: { bookingD:this.state.booking,  equipments: this.state.data, timePeriod: this.state.period } });
+    this.setState({ bookingDetails: { bookingD:this.state.booking,  equipments: this.state.data, timePeriod: this.state.period,total:this.state.total } });
   }
   render() {
     const equipmentData = this.state.equipmentList;
@@ -133,7 +144,7 @@ class BookingStep2 extends React.Component {
                   <hr color="black" />
                   <div className="row" style={{ marginLeft: "0.2rem" }}>
                     <p>Total</p>
-                    <p style={{ marginLeft: "10rem" }}>£ {this.state.booking.vehicle.price}</p>
+                    <p style={{ marginLeft: "10rem" }}>£ {this.state.bookingDetails.total}</p>
                   </div>
                 </div>
               </MDBCol>
@@ -149,18 +160,7 @@ class BookingStep2 extends React.Component {
               style={{ marginTop: "4rem", marginBottom: "4rem" }}
             >
               <div style={{ flex: 1 }}>
-                <Link style={{ color: "#ffab00" }}  to={{
-                    pathname: "/booking1",
-                    state: { vehicle: this.state.vehicle },
-                  }}>
-                  <MDBBtn outline color="amber">
-                    <MDBIcon
-                      icon="chevron-left"
-                      style={{ marginRight: "0.5rem" }}
-                    />
-                    Back
-                  </MDBBtn>
-                </Link>
+                
               </div>
 
               <div style={{ float: "right" }}>

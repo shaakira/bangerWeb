@@ -3,11 +3,12 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon } from "mdbreact";
 import "./BookingStep1.css";
 import { MDBInput } from "mdbreact";
 import moment from "moment";
+import { Alert } from "react-bootstrap";
 import GoogleMapReact from "google-map-react";
 import "react-day-picker/lib/style.css";
 import TextField from "@material-ui/core/TextField";
 import Booking from "../../Booking";
-import { Link } from "react-router-dom";
+import axios from "axios";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -24,11 +25,13 @@ class BookingStep1 extends React.Component {
       age: 18,
       pickUpDate: moment().format("YYYY-MM-DD"),
       pickUpTime: "08:00",
-      vehicle:this.props.location.state.vehicle
+      vehicle: this.props.location.state.vehicle,
+      userName: localStorage.getItem("username"),
     },
-    border:"1px solid white",
-    shadow:"0 1px 0 0 white",
-  
+    border: "1px solid white",
+    shadow: "0 1px 0 0 white",
+    errorText: "",
+    alertVisibility: false,
   };
 
   handleDateChange = (date) => {
@@ -39,12 +42,59 @@ class BookingStep1 extends React.Component {
     booking[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ booking });
   };
-  handleFocus=(e)=>{
-    this.setState({border:"1px solid #ffb700",shadow:"0 1px 0 0 #ffb700"})
-  }
-  handleBlur=(e)=>{
-    this.setState({border:"1px solid white",shadow:"0 1px 0 0 white"})
-  }
+  handleFocus = (e) => {
+    this.setState({ border: "1px solid #ffb700", shadow: "0 1px 0 0 #ffb700" });
+  };
+  handleBlur = (e) => {
+    this.setState({ border: "1px solid white", shadow: "0 1px 0 0 white" });
+  };
+
+  handleSubmit = async () => {
+    let token = localStorage.getItem("token");
+    var age = parseInt(this.state.booking.age);
+    var vehicle = this.state.booking.vehicle;
+    var vehicleName = "town cars";
+    var flag = true;
+    if (age < 25 && vehicle.type.toLowerCase() !== vehicleName.toLowerCase()) {
+      flag = false;
+    }
+    if (flag) {
+      var bookings = {};
+      bookings.returnDate = this.state.booking.returnDate;
+      bookings.returnTime = this.state.booking.returnTime;
+      bookings.age = this.state.booking.age;
+      bookings.pickUpDate = this.state.booking.pickUpDate;
+      bookings.pickUpTime = this.state.booking.pickUpTime;
+      bookings.vehicleId = this.state.booking.vehicle.id;
+      bookings.userName = localStorage.getItem("username");
+
+      console.log(bookings);
+      await axios
+        .post(`http://localhost:8080/api/booking/validateDate`, bookings, {
+          headers: { Authorization: "Bearer " + token },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.props.history.push({
+              pathname: "/booking2",
+              state: { booking: this.state.booking },
+            });
+          }
+        })
+        .catch((error) => {
+          this.setState({
+            alertVisibility: true,
+            errorText: error.response.data.message,
+          });
+        });
+    } else {
+      this.setState({
+        alertVisibility: true,
+        errorText: "You Should be above 25 to book " + vehicle.name,
+      });
+    }
+  };
+
   render() {
     const enabled =
       this.state.booking.age !== "" && this.state.booking.age >= 18;
@@ -196,7 +246,6 @@ class BookingStep1 extends React.Component {
                     <MDBInput
                       id="age"
                       name="age"
-                      
                       style={{
                         borderBottom: this.state.border,
                         boxShadow: this.state.shadow,
@@ -210,8 +259,8 @@ class BookingStep1 extends React.Component {
                       value={this.state.booking.age}
                       onChange={this.handleOnChange}
                       className="age"
-                      onFocus={e=>this.handleFocus(e)}
-                      onBlur={e=>this.handleBlur(e)}
+                      onFocus={(e) => this.handleFocus(e)}
+                      onBlur={(e) => this.handleBlur(e)}
                     />
                   </div>
                 </div>
@@ -233,20 +282,25 @@ class BookingStep1 extends React.Component {
               </GoogleMapReact>
             </MDBCol>
           </MDBRow>
+          <Alert
+            variant="danger"
+            dismissible
+            show={this.state.alertVisibility}
+            onClose={() => this.setState({ alertVisibility: false })}
+            style={{ marginTop: "1rem" }}
+          >
+            <p>{this.state.errorText}</p>
+          </Alert>
           <div
             style={{ marginTop: "4rem", float: "right", marginBottom: "4rem" }}
           >
-            <MDBBtn variant="contained" color="amber" disabled={!enabled}>
-              <Link
-                style={{ color: "white" }}
-                to={{
-                  pathname: "/booking2",
-                  state: { booking: this.state.booking },
-                }}
-              >
-                select equipment
-              </Link>
-
+            <MDBBtn
+              variant="contained"
+              color="amber"
+              disabled={!enabled}
+              onClick={this.handleSubmit}
+            >
+              select equipment
               <MDBIcon icon="chevron-right" style={{ marginLeft: "0.5rem" }} />
             </MDBBtn>
           </div>

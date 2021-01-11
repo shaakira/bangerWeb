@@ -9,7 +9,8 @@ import {
 } from "mdbreact";
 import "../BookingStep3/BookingStep3.css";
 import Booking from "../../Booking";
-import { Link } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+import axios from "axios";
 
 class BookingStep3 extends React.Component {
   state = {
@@ -39,9 +40,12 @@ class BookingStep3 extends React.Component {
       pickUpTime: "08:00",
       vehicle: "",
     },
+    errorText: "",
+    alertVisibility: false,
   };
   componentDidMount() {
     let price = 0;
+
     if (this.state.bookingDetails.equipments.length !== 0) {
       for (let i = 0; i < this.state.bookingDetails.equipments.length; i++) {
         price =
@@ -49,8 +53,9 @@ class BookingStep3 extends React.Component {
           this.state.bookingDetails.equipments[i].count *
             this.state.bookingDetails.equipments[i].price;
       }
+      console.log(this.state.bookingDetails);
       this.setState({ equipmentAmount: price });
-      const total = price + this.state.bookingDetails.bookingD.vehicle.price;
+      const total = price + this.state.bookingDetails.total;
       this.setState({ Total: total });
     }
     const detail = this.state.bookingDetails.bookingD;
@@ -64,6 +69,7 @@ class BookingStep3 extends React.Component {
         vehicle: detail.vehicle,
       },
     });
+    console.log(this.state.bookingDetails)
   }
   handleChange = (e) => {
     const driver = { ...this.state.driver };
@@ -78,9 +84,35 @@ class BookingStep3 extends React.Component {
       },
     });
   };
-  onBtnClick = () => {
+  onBtnClick = async () => {
     console.log(this.state.driver);
+    const driver = this.state.driver;
+    var token = localStorage.getItem("token");
+    var username = localStorage.getItem("username");
+    console.log(username);
+    await axios
+      .post(
+        `http://localhost:8080/api/booking/validateDriver/${username}`,
+        driver,
+        { headers: { Authorization: "Bearer " + token } }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          this.props.history.push({
+            pathname: "/booking4",
+            state: { bookingSummary: this.state.bookingSummary },
+          });
+        }
+      })
+      .catch((error) => {
+      
+        this.setState({
+          alertVisibility: true,
+          errorText: error.response.data.message,
+        });
+      });
   };
+
   render() {
     const details = this.state.bookingDetails;
     const driver = this.state.driver;
@@ -152,7 +184,7 @@ class BookingStep3 extends React.Component {
                   <div className="row" style={{ marginLeft: "0.2rem" }}>
                     <h6>Selected vehicle</h6>
                     <p style={{ marginLeft: "5rem" }}>
-                      £ {details.bookingD.vehicle.price}
+                      £ {this.state.bookingDetails.total}
                     </p>
                   </div>
                   <div
@@ -310,49 +342,44 @@ class BookingStep3 extends React.Component {
                           onChange={this.handleChange}
                         />
                       </MDBCol>
+                   
                     </MDBRow>
                   </div>
+                  <Alert
+            variant="danger"
+            dismissible
+            show={this.state.alertVisibility}
+            onClose={() => this.setState({ alertVisibility: false })}
+            style={{ marginTop: "1rem" }}
+          >
+            <p>{this.state.errorText}</p>
+          </Alert>
                 </div>
               </MDBCol>
+            
             </MDBRow>
+         
             <div
               className="row"
               style={{ marginTop: "4rem", marginBottom: "4rem" }}
             >
               <div style={{ flex: 1 }}>
-              <Link
-                style={{ color: "#ffab00" }}
-                to={{
-                  pathname: "/booking2",
-                  state: { booking: this.state.booking },
-                }}
-              >
-                  <MDBBtn outline color="amber">
-                    <MDBIcon
-                      icon="chevron-left"
-                      style={{ marginRight: "0.5rem" }}
-                    />
-                    Back
-                  </MDBBtn>
-               </Link>
+                
               </div>
 
               <div style={{ float: "right" }}>
-                <Link
-                  style={{ color: "white" }}
-                  to={{
-                    pathname: "/booking4",
-                    state: { bookingSummary: this.state.bookingSummary },
-                  }}
+                <MDBBtn
+                  variant="contained"
+                  color="amber"
+                  disabled={!enabled}
+                  onClick={this.onBtnClick}
                 >
-                  <MDBBtn variant="contained" color="amber" disabled={!enabled}>
-                    booking summary
-                    <MDBIcon
-                      icon="chevron-right"
-                      style={{ marginLeft: "0.5rem" }}
-                    />
-                  </MDBBtn>
-                </Link>
+                  booking summary
+                  <MDBIcon
+                    icon="chevron-right"
+                    style={{ marginLeft: "0.5rem" }}
+                  />
+                </MDBBtn>
               </div>
             </div>
           </MDBContainer>

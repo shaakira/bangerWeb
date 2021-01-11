@@ -119,8 +119,6 @@ class Profile extends React.Component {
         console.log(error);
       });
 
-    // for(let i = 0; i< e.target.files.length; i++) {
-    //   formData.append('file', e.target.files[i])
   };
   onUpdatePasswordClick = async () => {
     if (this.state.confirmPassword === this.state.passwordUser.password) {
@@ -154,32 +152,12 @@ class Profile extends React.Component {
   };
   onlicenseChangeHandler = (e) => {
     const document = { ...this.state.document };
-    //  console.log(e.target.files[0])
     document[e.currentTarget.name] = e.target.files[0];
 
     this.setState({ document });
-    // this.setState({
-    //     selectedFile: e.target.files[0]
-    // });
-    // const formData = new FormData();
-    // console.log(this.state.document)
-    // formData.append('file', this.state.document.license);
-    // console.log(formData)
   };
 
-  // onUtilityChangeHandler = (e) => {
-  //   const document ={...this.state.document};
-  //   document[e.currentTarget.name]=e.target.files[0];
 
-  //   this.setState({document});
-  //   // e.preventDefault();
-  //   // this.setState({
-  //   //     selectedFile: e.target.files[0]
-  //   // });
-  //   // const formData = new FormData();
-  //   // formData.append('file', this.state.selectedFile);
-
-  // };
   render() {
     const enabled =
       this.state.user.customerName !== "" && this.state.user.email !== "";
@@ -299,20 +277,6 @@ class Profile extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {/* <MDBInput
-                        borderColor="red"
-                        style={{
-                          borderColor: "white",
-                          color: "black",
-                          marginTop: "-1rem",
-                          marginBottom: "-1rem",
-                        }}
-                        type="text"
-                        id="email"
-                        name="email"
-                        value={this.state.user.email}
-                        onChange={this.handleChange}
-                      /> */}
                     </MDBCol>
 
                     <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
@@ -336,20 +300,6 @@ class Profile extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {/* <MDBInput
-                        borderColor="red"
-                        style={{
-                          borderColor: "white",
-                          color: "black",
-                          marginTop: "-1rem",
-                          marginBottom: "-1rem",
-                        }}
-                        type="text"
-                        id="customerName"
-                        name="customerName"
-                        value={this.state.user.customerName}
-                        onChange={this.handleChange}
-                      /> */}
                     </MDBCol>
 
                     <div style={{ float: "right", marginLeft: "11rem" }}>
