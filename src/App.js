@@ -19,6 +19,8 @@ import AdminProfile from "./Screens/Admin/AdminProfile/AdminProfile";
 import Blacklist from "./Screens/Blacklist/Blacklist";
 import User from "./Screens/Admin/Users/Users";
 import Equipments from "./Screens/Admin/Equipments/Equipments";
+import Vehicles from "./Screens/Admin/Vehicles/Vehicles";
+import Compare from "./Screens/Admin/Compare/Compare";
 
 function App() {
   return (
@@ -43,6 +45,9 @@ function App() {
         <Route exact path="/blacklist" component={Blacklist} />
         <Route exact path="/users" component={User} />
         <Route exact path="/equipments" component={Equipments} />
+        <Route exact path="/vehicles" component={Vehicles} />
+        <Route exact path="/comparison" component={Compare} />
+
       </Switch>
     </Router>
   );

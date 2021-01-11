@@ -1,0 +1,36 @@
+.type-cont{
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+    border: 1px solid rgb(156, 154, 154);
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 10px;
+    font-size: small;
+}
+.card-cont{
+margin: 10px;
+background-color: white;
+}
+.price-card{
+    text-align: center;
+    background-color: rgb(247, 244, 244);
+    height: 100%;
+}
+.fac-card{
+    text-align: center;
+    margin-top: 10px;
+}
+.text-card{
+   text-transform: capitalize; 
+   font-size: small;
+   margin-top: 10px;
+   
+}
+.price-card h2{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

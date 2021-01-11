@@ -13,3 +13,19 @@
     float: right;
     margin-top: -2rem;
 }
+.add-cont{
+    background-color: #e6e6e4;
+}
+.add-inner{
+    background-color: white;
+    border-radius: 5px;
+    padding: 2rem;
+}
+.img-cont{
+}
+.inner-img-cont{
+    margin: 2rem;
+    border: 1px dashed rgb(187, 186, 186);
+    text-align: center;
+    padding: 2rem;
+}

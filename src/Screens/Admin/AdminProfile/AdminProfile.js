@@ -84,6 +84,11 @@ class AdminProfile extends React.Component {
       });
     }
   };
+  handlePasswordChange=(e)=>{
+    const passwordUser={...this.state.passwordUser};
+    passwordUser[e.currentTarget.name]=e.currentTarget.value;
+    this.setState({passwordUser});
+  }
   render() {
     const enabled =
       this.state.user.customerName !== "" && this.state.user.email !== "";

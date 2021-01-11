@@ -12,9 +12,10 @@ import {
   MDBModalBody,
   MDBInput,
 } from "mdbreact";
-import Alert from "react-bootstrap/Alert";
+import { Alert, Modal } from "react-bootstrap";
 import SideNav from "../../../Components/SideNav/SideNav";
 import TopNavigation from "../../../Components/TopNavigation/TopNavigation";
+import image from "../../../Images/upload.png";
 import "../Equipments/Equipments.css";
 class Equipments extends React.Component {
   state = {
@@ -22,6 +23,8 @@ class Equipments extends React.Component {
     modal: false,
     equipment: { id: "", name: "", description: "", count: "", price: "" },
     show: false,
+    newEquipment: { name: "", description: "", count: "", price: "" },
+    addModal: false,
   };
   loadData = async () => {
     const { data: equipmentList } = await axios.get(
@@ -139,7 +142,10 @@ class Equipments extends React.Component {
                     md="4"
                     style={{ marginTop: "-1.8rem", marginLeft: "2rem" }}
                   >
-                    <MDBBtn color="black">
+                    <MDBBtn
+                      color="black"
+                      onClick={() => this.setState({ addModal: true })}
+                    >
                       <MDBIcon icon="plus" style={{ marginRight: "1rem" }} />
                       add equipment
                     </MDBBtn>
@@ -329,6 +335,159 @@ class Equipments extends React.Component {
             </div>
           </MDBModalBody>
         </MDBModal>
+
+        <Modal
+          show={this.state.addModal}
+          size="lg"
+          centered
+          onHide={() => this.setState({ addModal: false })}
+        >
+          <Modal.Header closeButton style={{ backgroundColor: "#ffb700" }}>
+            <Modal.Title>New Equipment</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="add-cont">
+            <div className="add-inner">
+              <MDBRow>
+                <MDBCol md="6">
+                  <h6
+                    className="mb-2 grey-text"
+                    style={{ fontSize: 12, marginLeft: "0.5rem" }}
+                  >
+                    EQUIPMENT NAME
+                  </h6>
+                  <MDBInput
+                    style={{
+                      color: "black",
+                      marginTop: "-1rem",
+                      marginBottom: "-1rem",
+                      fontSize: "0.9rem",
+                    }}
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={this.state.newEquipment.name}
+                    outline
+                    required
+                  />
+                  <h6
+                    className="mb-2 grey-text"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: "0.5rem",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    EQUIPMENT COUNT
+                  </h6>
+                  <MDBInput
+                    style={{
+                      color: "black",
+                      marginTop: "-1rem",
+                      marginBottom: "-1rem",
+                      fontSize: "0.9rem",
+                    }}
+                    type="text"
+                    id="count"
+                    name="count"
+                    value={this.state.newEquipment.count}
+                    outline
+                    required
+                  />
+                  <h6
+                    className="mb-2 grey-text"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: "0.5rem",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    ADD IMAGE
+                  </h6>
+                  <div class="img-cont">
+                    <div className="inner-img-cont">
+                      <img alt="" src={image} style={{ height: "50px" }} />
+                      <p className="mt-2 grey-text">upload an image</p>
+                    </div>
+                    <div className="custom-file">
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01"
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile01"
+                        style={{
+                          color: "black",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        Choose file
+                      </label>
+                    </div>
+                  </div>
+                </MDBCol>
+                <div style={{ width: "1px", backgroundColor: "#e6e6e4" }} />
+                <MDBCol md="5">
+                  <h6
+                    className="mb-2 grey-text"
+                    style={{ fontSize: 12, marginLeft: "0.5rem" }}
+                  >
+                    EQUIPMENT DESCRIPTION
+                  </h6>
+                  <textarea
+                    className="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="5"
+                    name="description"
+                    value={this.state.equipment.description}
+                  />
+                  <h6
+                    className="mb-2 grey-text"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: "0.5rem",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    PRICE PER DAY
+                  </h6>
+                  <MDBRow>
+                    <MDBCol md="1" style={{ marginTop: "0.8rem" }}>
+                      £
+                    </MDBCol>
+                    <MDBCol md="10">
+                      <MDBInput
+                        style={{
+                          color: "black",
+                          marginTop: "-1rem",
+                          marginBottom: "-1rem",
+                          fontSize: "0.9rem",
+                        }}
+                        type="text"
+                        id="count"
+                        name="count"
+                        value={this.state.newEquipment.count}
+                        outline
+                        required
+                      />
+                    </MDBCol>
+                  </MDBRow>
+                  <div
+                    style={{
+                      float: "right",
+                      marginTop: "6rem",
+                      marginRight: "-4rem",
+                    }}
+                  >
+                    <MDBBtn color="black">submit</MDBBtn>
+                  </div>
+                </MDBCol>
+              </MDBRow>
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }

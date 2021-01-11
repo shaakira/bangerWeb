@@ -17,7 +17,7 @@ class SideNav extends React.Component {
             />
           </a>
           <MDBListGroup className="list-group-flush">
-            <NavLink exact={true} to="/" activeClassName="activeClass">
+            <NavLink exact={true} to="/dashboard" activeClassName="activeClass">
               <MDBListGroupItem
                 className="nav-itm"
                 style={{
@@ -62,13 +62,13 @@ class SideNav extends React.Component {
                 BOOKINGS
               </MDBListGroupItem>
             </NavLink>
-            <NavLink to="/maps" activeClassName="activeClass">
+            <NavLink to="/vehicles" activeClassName="activeClass">
               <MDBListGroupItem
                 className="nav-itm"
                 style={{
                   backgroundColor: "#ffb700",
                   color:
-                    this.props.active === "vehicle"
+                    this.props.active === "vehicles"
                       ? "white"
                       : "rgb(58, 58, 58)",
                 }}
@@ -120,6 +120,21 @@ class SideNav extends React.Component {
               >
                 <MDBIcon icon="envelope" className="mr-3" />
                 CONTACT
+              </MDBListGroupItem>
+            </NavLink>
+            <NavLink to="/comparison" activeClassName="activeClass">
+              <MDBListGroupItem
+                className="nav-itm"
+                style={{
+                  backgroundColor: "#ffb700",
+                  color:
+                    this.props.active === "compare"
+                      ? "white"
+                      : "rgb(58, 58, 58)",
+                }}
+              >
+               <MDBIcon icon="balance-scale" className="mr-3"/>
+               COMPARISON
               </MDBListGroupItem>
             </NavLink>
             <div className="divider div-stl" />
