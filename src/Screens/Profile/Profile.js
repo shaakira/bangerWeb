@@ -28,10 +28,13 @@ class Profile extends React.Component {
     confirmPassword: "",
     showPwdDanger: false,
     showPwdSuccess: false,
+    utilityText:"Choose file",
+    licenseText:"Choose file",
+    alertShow:false
+
   };
   async componentDidMount() {
     let token = localStorage.getItem("token");
-    console.log("asdad");
     await axios
       .get(`http://localhost:8080/api/user/getUser/${this.state.username}`, {
         headers: { Authorization: "Bearer " + token },
@@ -42,7 +45,7 @@ class Profile extends React.Component {
           this.setState({ user: res.data });
         }
       });
-    console.log(this.state.user);
+    console.log(this.state.user.customerName);
   }
   handleChange = (e) => {
     const user = { ...this.state.user };
@@ -113,6 +116,7 @@ class Profile extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
+          this.setState({alertShow:true,utilityText:'Choose file',licenseText:'Choose file'})
         }
       })
       .catch((error) => {
@@ -153,7 +157,12 @@ class Profile extends React.Component {
   onlicenseChangeHandler = (e) => {
     const document = { ...this.state.document };
     document[e.currentTarget.name] = e.target.files[0];
+    if(e.currentTarget.name==="utility"){
+      this.setState({utilityText: e.target.files[0].name})
+    }else{
+      this.setState({licenseText: e.target.files[0].name})
 
+    }
     this.setState({ document });
   };
 
@@ -251,7 +260,7 @@ class Profile extends React.Component {
           </Alert>
           <hr />
           <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-            <div className="header-container">
+            <div className="up-header-container">
               <p>YOUR DOCUMENTS</p>
             </div>
             <div className="cont">
@@ -260,54 +269,73 @@ class Profile extends React.Component {
                   <MDBRow style={{ marginTop: "2rem" }}>
                     <MDBCol md="4">
                       <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
-                        License Picture
+                        LICENSE IMAGE
                       </h6>
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group files color">
-                              <label>Upload Your File </label>
-                              <input
-                                type="file"
-                                className="form-control"
-                                name="license"
-                                onChange={this.onlicenseChangeHandler}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="custom-file" style={{marginTop:'1rem'}}>
+                      <input
+                        type="file"
+                        className="custom-file-input"
+                        id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01"
+                        name="license"
+                        onChange={this.onlicenseChangeHandler}
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile01"
+                        style={{
+                          color: "black",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {this.state.licenseText}
+                      </label>
+                    </div>
                     </MDBCol>
 
                     <div style={{ width: "1px", backgroundColor: "#E6E4E4" }} />
 
                     <MDBCol md="4">
+                      <div>
                       <h6 className="mb-2 grey-text" style={{ fontSize: 12 }}>
-                        Utility Picture
+                        UTILITY BILL / TAX BILL / BANK STATEMENT IMAGE
                       </h6>
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group files color">
-                              <label>Upload Your File </label>
-                              <input
-                                type="file"
-                                className="form-control"
-                                name="utility"
-                                onChange={this.onlicenseChangeHandler}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <div className="custom-file form-group files color" style={{marginTop:'1rem'}}>
+                        
+                      <input
+                        type="file"
+                        className="custom-file-input form-control"
+                        id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01"
+                        name="utility"
+                        onChange={this.onlicenseChangeHandler}
+                      />
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile01"
+                        style={{
+                          color: "black",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                      {this.state.utilityText}
+                      </label>
+                    </div>
+                   <h6 className="mb-2 " style={{ fontSize: 13,marginTop:'1rem',color: "#c40404" }}> <i
+                      class="far fa-question-circle"
+                      style={{ color: "#c40404", fontSize: 15,marginRight:'0.5rem'}}
+                    />
+                    Make sure uploading documents are no older than 3 months. 
+                  </h6>
+                    </div>
                     </MDBCol>
 
-                    <div style={{ float: "right", marginLeft: "11rem" }}>
+                    <div style={{ float: "right", marginLeft: "10rem",marginTop:'1rem',marginBottom:'1rem' }}>
                       <MDBBtn
                         color="black"
                         outline
                         onClick={this.handleUpdateDocuments}
-                        disabled={!enabled}
+                       disabled={this.state.document.utility===undefined &&this.state.document.license===undefined}
                       >
                         Update Documents
                       </MDBBtn>
@@ -317,6 +345,19 @@ class Profile extends React.Component {
               </div>
             </div>
           </div>
+          <Alert
+            variant="success"
+            onClose={() => {
+              this.setState({ alertShow: false });
+            }}
+            dismissible
+            show={this.state.alertShow}
+          >
+            <Alert.Heading>Success</Alert.Heading>
+            <p>
+              {this.state.username}, your documents updated successfully.
+            </p>
+          </Alert>
           <hr />
           <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
             <div className="header-container">

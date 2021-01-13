@@ -21,10 +21,11 @@ class Equipments extends React.Component {
   state = {
     equipmentList: [],
     modal: false,
-    equipment: { id: "", name: "", description: "", count: "", price: "" },
+    equipment: { id: "", name: "", description: "", count: 0, price: 0 },
     show: false,
-    newEquipment: { name: "", description: "", count: "", price: "" },
+    newEquipment: { name: "", description: "", count: 0, price: 0 },
     addModal: false,
+    file: undefined,
   };
   loadData = async () => {
     const { data: equipmentList } = await axios.get(
@@ -47,6 +48,14 @@ class Equipments extends React.Component {
     const equipment = { ...this.state.equipment };
     equipment[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ equipment });
+  };
+  handleNewEquipmentChange = (e) => {
+    const newEquipment = { ...this.state.newEquipment };
+    newEquipment[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ newEquipment });
+  };
+  handleImageHandler = (e) => {
+    this.setState({ file: e.target.files[0] });
   };
   handleUpdateEquipment = async () => {
     let token = localStorage.getItem("token");
@@ -79,6 +88,38 @@ class Equipments extends React.Component {
         }
       })
       .catch((error) => console.log(error));
+  };
+  handleAddEquipment = async () => {
+    let token = localStorage.getItem("token");
+   
+    const formData = new FormData();
+    formData.append("file", this.state.file);
+    formData.append("name",this.state.newEquipment.name);
+    formData.append("price",this.state.newEquipment.price);
+    formData.append("description",this.state.newEquipment.description);
+    formData.append("count",this.state.newEquipment.count);
+   
+    await axios
+      .post(`http://localhost:8080/api/equipment/addEquipment`,formData,{
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        "Content-Type": "multipart/form-data",
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          this.setState({addModal:false})
+          this.loadData();
+          alert("Equipment added successfully.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+    console.log(this.state.newVehicle);
   };
   sort() {
     var input, filter, table, tr, td, i, txtValue;
@@ -368,6 +409,7 @@ class Equipments extends React.Component {
                     value={this.state.newEquipment.name}
                     outline
                     required
+                    onChange={this.handleNewEquipmentChange}
                   />
                   <h6
                     className="mb-2 grey-text"
@@ -386,12 +428,13 @@ class Equipments extends React.Component {
                       marginBottom: "-1rem",
                       fontSize: "0.9rem",
                     }}
-                    type="text"
+                    type="number"
                     id="count"
                     name="count"
                     value={this.state.newEquipment.count}
                     outline
                     required
+                    onChange={this.handleNewEquipmentChange}
                   />
                   <h6
                     className="mb-2 grey-text"
@@ -413,6 +456,8 @@ class Equipments extends React.Component {
                         type="file"
                         className="custom-file-input"
                         id="inputGroupFile01"
+                        name="file"
+                        onChange={this.handleImageHandler}
                         aria-describedby="inputGroupFileAddon01"
                       />
                       <label
@@ -441,7 +486,8 @@ class Equipments extends React.Component {
                     id="exampleFormControlTextarea1"
                     rows="5"
                     name="description"
-                    value={this.state.equipment.description}
+                    value={this.state.newEquipment.description}
+                    onChange={this.handleNewEquipmentChange}
                   />
                   <h6
                     className="mb-2 grey-text"
@@ -465,12 +511,13 @@ class Equipments extends React.Component {
                           marginBottom: "-1rem",
                           fontSize: "0.9rem",
                         }}
-                        type="text"
-                        id="count"
-                        name="count"
-                        value={this.state.newEquipment.count}
+                        type="number"
+                        id="price"
+                        name="price"
+                        value={this.state.newEquipment.price}
                         outline
                         required
+                        onChange={this.handleNewEquipmentChange}
                       />
                     </MDBCol>
                   </MDBRow>
@@ -481,7 +528,7 @@ class Equipments extends React.Component {
                       marginRight: "-4rem",
                     }}
                   >
-                    <MDBBtn color="black">submit</MDBBtn>
+                    <MDBBtn color="black" onClick={this.handleAddEquipment}>submit</MDBBtn>
                   </div>
                 </MDBCol>
               </MDBRow>

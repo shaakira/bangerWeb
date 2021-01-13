@@ -17,3 +17,14 @@ padding: 4rem;
   padding-top: 0.9rem;
   text-transform: uppercase;
 }
+.up-header-container{
+  height: 50px;
+  width: 150px;
+  background-color: #ffb100;
+  text-align: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+padding-top: 0.9rem;
+text-transform: uppercase;
+}

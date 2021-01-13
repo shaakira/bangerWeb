@@ -9,7 +9,6 @@ import {
   MDBModal,
   MDBModalBody,
   MDBModalHeader,
-  MDBModalFooter,
 } from "mdbreact";
 import { Alert, Modal } from "react-bootstrap";
 import image from "../../../Images/upload.png";
@@ -26,6 +25,21 @@ class Vehicles extends React.Component {
     modal: false,
     addModal: false,
     typeVisibility: false,
+    file: undefined,
+    newVehicle: {
+      name: "",
+      price: 0,
+      passengerCount: 0,
+      baggageCount: 0,
+      transmission: "",
+      description: "",
+      engine: 0,
+      AC: "",
+      doorCount: 0,
+      fuelType: "",
+      fuelPolicy: "",
+      type: "",
+    },
   };
   loadData = async () => {
     console.log("test");
@@ -38,6 +52,51 @@ class Vehicles extends React.Component {
   async componentDidMount() {
     this.loadData();
   }
+
+  handleImageHandler = (e) => {
+    this.setState({ file: e.target.files[0] });
+  };
+  handleSubmit = async () => {
+    let token = localStorage.getItem("token");
+    console.log(this.state.newVehicle);
+    const formData = new FormData();
+    formData.append("file", this.state.file);
+    formData.append("name",this.state.newVehicle.name);
+    formData.append("price",this.state.newVehicle.price);
+    formData.append("description",this.state.newVehicle.description);
+    formData.append("passengerCount",this.state.newVehicle.passengerCount);
+    formData.append("baggageCount",this.state.newVehicle.baggageCount);
+    formData.append("transmission",this.state.newVehicle.transmission);
+    formData.append("engine",this.state.newVehicle.engine);
+    formData.append("AC",this.state.newVehicle.AC);
+    formData.append("doorCount",this.state.newVehicle.doorCount);
+    formData.append("fuelType",this.state.newVehicle.fuelType);
+    formData.append("fuelPolicy",this.state.newVehicle.fuelPolicy);
+    formData.append("type",this.state.newVehicle.type);
+    console.log(token);
+    await axios
+      .post(`http://localhost:8080/api/v1/vehicle/addVehicle`,formData,{
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        "Content-Type": "multipart/form-data",
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          this.setState({addModal:false})
+          this.loadData();
+          alert("Vehicle Added successfully.");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+    console.log(this.state.newVehicle);
+  };
+
   handleDelete = async (item) => {
     let token = localStorage.getItem("token");
     await axios
@@ -47,7 +106,7 @@ class Vehicles extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           console.log("deleted");
-          this.loadData();
+          this.componentDidMount();
         }
       })
       .catch((error) => console.log(error));
@@ -83,6 +142,11 @@ class Vehicles extends React.Component {
           window.location.reload();
         }
       });
+  };
+  handleChangeNewVehicle = (e) => {
+    const newVehicle = { ...this.state.newVehicle };
+    newVehicle[e.currentTarget.name] = e.currentTarget.value;
+    this.setState({ newVehicle });
   };
   render() {
     let data = this.state.vehicleList;
@@ -266,6 +330,8 @@ class Vehicles extends React.Component {
                   name="name"
                   outline
                   required
+                  value={this.state.newVehicle.name}
+                  onChange={this.handleChangeNewVehicle}
                 />
                 <h6
                   className="mb-2 grey-text"
@@ -282,6 +348,9 @@ class Vehicles extends React.Component {
                     marginBottom: "1rem",
                     fontSize: "0.9rem",
                   }}
+                  name="description"
+                  value={this.state.newVehicle.description}
+                  onChange={this.handleChangeNewVehicle}
                 />
                 <h6
                   className="mb-2 grey-text"
@@ -300,7 +369,10 @@ class Vehicles extends React.Component {
                           marginBottom: "1rem",
                           fontSize: "0.9rem",
                         }}
+                        value={this.state.newVehicle.type}
+                        onChange={this.handleChangeNewVehicle}
                       >
+                        <option>select one</option>
                         <option value="town cars">Town Cars</option>
                         <option value="family hatchback">
                           Family Hatchback
@@ -322,6 +394,8 @@ class Vehicles extends React.Component {
                         name="type"
                         outline
                         required
+                        value={this.state.newVehicle.type}
+                        onChange={this.handleChangeNewVehicle}
                       />
                     )}
                   </MDBCol>
@@ -375,10 +449,12 @@ class Vehicles extends React.Component {
                         fontSize: "0.9rem",
                       }}
                       type="text"
-                      id="count"
-                      name="count"
+                      id="price"
+                      name="price"
                       outline
                       required
+                      value={this.state.newVehicle.price}
+                      onChange={this.handleChangeNewVehicle}
                     />
                   </MDBCol>
                 </MDBRow>
@@ -400,6 +476,8 @@ class Vehicles extends React.Component {
                   <div className="custom-file">
                     <input
                       type="file"
+                      name="file"
+                      onChange={this.handleImageHandler}
                       className="custom-file-input"
                       id="inputGroupFile01"
                       aria-describedby="inputGroupFileAddon01"
@@ -440,6 +518,8 @@ class Vehicles extends React.Component {
                       name="passengerCount"
                       outline
                       required
+                      value={this.state.newVehicle.passengerCount}
+                      onChange={this.handleChangeNewVehicle}
                     />
                   </MDBCol>
                   <MDBCol md="6">
@@ -461,6 +541,8 @@ class Vehicles extends React.Component {
                       name="baggageCount"
                       outline
                       required
+                      value={this.state.newVehicle.baggageCount}
+                      onChange={this.handleChangeNewVehicle}
                     />
                   </MDBCol>
                 </MDBRow>
@@ -484,6 +566,8 @@ class Vehicles extends React.Component {
                       name="engine"
                       outline
                       required
+                      value={this.state.newVehicle.engine}
+                      onChange={this.handleChangeNewVehicle}
                     />
                   </MDBCol>
                   <MDBCol md="6">
@@ -491,7 +575,7 @@ class Vehicles extends React.Component {
                       className="mb-2 grey-text"
                       style={{ fontSize: 12, marginLeft: "0.5rem" }}
                     >
-                      DOOR COUNT 
+                      DOOR COUNT
                     </h6>
                     <MDBInput
                       style={{
@@ -505,6 +589,8 @@ class Vehicles extends React.Component {
                       name="doorCount"
                       outline
                       required
+                      value={this.state.newVehicle.doorCount}
+                      onChange={this.handleChangeNewVehicle}
                     />
                   </MDBCol>
                 </MDBRow>
@@ -517,21 +603,21 @@ class Vehicles extends React.Component {
                       TRANSMISSION
                     </h6>
                     <select
-                        name="transmission"
-                        className="browser-default custom-select"
-                        style={{
-                          color: "black",
-                          marginBottom: "1rem",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        <option value="auto">Auto</option>
-                        <option value="manual">
-                          Manual
-                        </option>
-                        <option value="CVT">CVT</option>
-                        
-                      </select>
+                      name="transmission"
+                      className="browser-default custom-select"
+                      style={{
+                        color: "black",
+                        marginBottom: "1rem",
+                        fontSize: "0.9rem",
+                      }}
+                      value={this.state.newVehicle.transmission}
+                      onChange={this.handleChangeNewVehicle}
+                    >
+                      <option>select one</option>
+                      <option value="auto">Auto</option>
+                      <option value="manual">Manual</option>
+                      <option value="CVT">CVT</option>
+                    </select>
                   </MDBCol>
                   <MDBCol md="6">
                     <h6
@@ -541,20 +627,21 @@ class Vehicles extends React.Component {
                       AC
                     </h6>
                     <select
-                        name="ac"
-                        className="browser-default custom-select"
-                        style={{
-                          color: "black",
-                          marginBottom: "1.5rem",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        <option value="yes">Yes</option>
-                        <option value="No">
-                          No
-                        </option>
-                        
-                      </select>
+                      name="AC"
+                      className="browser-default custom-select"
+                      style={{
+                        color: "black",
+                        marginBottom: "1.5rem",
+                        fontSize: "0.9rem",
+                      }}
+                      value={this.state.newVehicle.AC}
+                      onChange={this.handleChangeNewVehicle}
+                    >
+                      <option>select one</option>
+
+                      <option value="yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
                   </MDBCol>
                 </MDBRow>
                 <MDBRow>
@@ -566,58 +653,66 @@ class Vehicles extends React.Component {
                       FUEL TYPE
                     </h6>
                     <select
-                        name="fuelType"
-                        className="browser-default custom-select"
-                        style={{
-                          color: "black",
-                          marginBottom: "1.5rem",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        <option value="petrol">Petrol</option>
-                        <option value="diesel">
-                          Diesel
-                        </option>
-                        
-                      </select>
+                      name="fuelType"
+                      className="browser-default custom-select"
+                      style={{
+                        color: "black",
+                        marginBottom: "1.5rem",
+                        fontSize: "0.9rem",
+                      }}
+                      value={this.state.newVehicle.fuelType}
+                      onChange={this.handleChangeNewVehicle}
+                    >
+                      <option>select one</option>
+
+                      <option value="petrol">Petrol</option>
+                      <option value="diesel">Diesel</option>
+                    </select>
                   </MDBCol>
                   <MDBCol md="6">
                     <h6
                       className="mb-2 grey-text"
                       style={{ fontSize: 12, marginLeft: "0.5rem" }}
                     >
-                      BAGGAGE COUNT
+                      FUEL POLICY
                     </h6>
                     <select
-                        name="fuelPolicy"
-                        className="browser-default custom-select"
-                        style={{
-                          color: "black",
-                          marginBottom: "1.5rem",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        <option value="full">Full</option>
-                        <option value="n/a">
-                          N/A
-                        </option>
-                        
-                      </select>
+                      name="fuelPolicy"
+                      className="browser-default custom-select"
+                      style={{
+                        color: "black",
+                        marginBottom: "1.5rem",
+                        fontSize: "0.9rem",
+                      }}
+                      value={this.state.newVehicle.fuelPolicy}
+                      onChange={this.handleChangeNewVehicle}
+                    >
+                      <option>select one</option>
+
+                      <option value="full">Full</option>
+                      <option value="n/a">N/A</option>
+                    </select>
                   </MDBCol>
                 </MDBRow>
                 <div
-                    style={{
-                      float: "right",
-                      marginTop: "20rem",
-                    }}
+                  style={{
+                    float: "right",
+                    marginTop: "20rem",
+                  }}
+                >
+                  <MDBBtn
+                    color="white"
+                    onClick={() => this.setState({ addModal: false })}
                   >
-                    <MDBBtn color="white" onClick={() => this.setState({ addModal: false })}>cancel</MDBBtn>
-                    <MDBBtn color="black">submit</MDBBtn>
-                  </div>
+                    cancel
+                  </MDBBtn>
+                  <MDBBtn color="black" onClick={this.handleSubmit}>
+                    submit
+                  </MDBBtn>
+                </div>
               </MDBCol>
             </MDBRow>
           </MDBModalBody>
-      
         </MDBModal>
       </div>
     );

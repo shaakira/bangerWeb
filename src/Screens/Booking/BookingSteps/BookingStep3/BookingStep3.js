@@ -6,6 +6,10 @@ import {
   MDBInput,
   MDBBtn,
   MDBIcon,
+  MDBModal,
+  MDBModalBody,
+  MDBModalHeader,
+  MDBModalFooter,
 } from "mdbreact";
 import "../BookingStep3/BookingStep3.css";
 import Booking from "../../Booking";
@@ -42,6 +46,7 @@ class BookingStep3 extends React.Component {
     },
     errorText: "",
     alertVisibility: false,
+    modal: false
   };
   componentDidMount() {
     let price = 0;
@@ -69,7 +74,7 @@ class BookingStep3 extends React.Component {
         vehicle: detail.vehicle,
       },
     });
-    console.log(this.state.bookingDetails)
+    console.log(this.state.bookingDetails);
   }
   handleChange = (e) => {
     const driver = { ...this.state.driver };
@@ -98,21 +103,36 @@ class BookingStep3 extends React.Component {
       )
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
+          if(res.data==="documents"){
+            this.setState({modal:true})
+          }
+        else{
           this.props.history.push({
             pathname: "/booking4",
             state: { bookingSummary: this.state.bookingSummary },
           });
         }
+        }
       })
       .catch((error) => {
-      
         this.setState({
           alertVisibility: true,
           errorText: error.response.data.message,
         });
       });
   };
-
+  submitBooking=()=>{
+    this.props.history.push({
+      pathname: "/booking4",
+      state: { bookingSummary: this.state.bookingSummary },
+    });
+  }
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
   render() {
     const details = this.state.bookingDetails;
     const driver = this.state.driver;
@@ -342,30 +362,26 @@ class BookingStep3 extends React.Component {
                           onChange={this.handleChange}
                         />
                       </MDBCol>
-                   
                     </MDBRow>
                   </div>
                   <Alert
-            variant="danger"
-            dismissible
-            show={this.state.alertVisibility}
-            onClose={() => this.setState({ alertVisibility: false })}
-            style={{ marginTop: "1rem" }}
-          >
-            <p>{this.state.errorText}</p>
-          </Alert>
+                    variant="danger"
+                    dismissible
+                    show={this.state.alertVisibility}
+                    onClose={() => this.setState({ alertVisibility: false })}
+                    style={{ marginTop: "1rem" }}
+                  >
+                    <p>{this.state.errorText}</p>
+                  </Alert>
                 </div>
               </MDBCol>
-            
             </MDBRow>
-         
+
             <div
               className="row"
               style={{ marginTop: "4rem", marginBottom: "4rem" }}
             >
-              <div style={{ flex: 1 }}>
-                
-              </div>
+              <div style={{ flex: 1 }}></div>
 
               <div style={{ float: "right" }}>
                 <MDBBtn
@@ -383,6 +399,28 @@ class BookingStep3 extends React.Component {
               </div>
             </div>
           </MDBContainer>
+          <MDBModal isOpen={this.state.modal} toggle={this.toggle} centered>
+            <MDBModalHeader toggle={this.toggle}>Are you sure?</MDBModalHeader>
+            <MDBModalBody>
+              <p>
+                <MDBIcon
+                  icon="exclamation-circle"
+                  style={{ marginRight: "0.5rem" }}
+                />
+                Are you sure that the license you have have submitted in the
+                profile screen is the driving license of the entered driver's
+                driving license? and the submitted bills are no older than 3
+                months
+              </p>
+              <p style={{color:'red',fontSize:'0.9rem'}}> * If not your booking will be cancelled by Bangers and Co</p>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <MDBBtn color="white" onClick={this.toggle}>
+                Cancel
+              </MDBBtn>
+              <MDBBtn color="yellow" onClick={this.submitBooking}>yes</MDBBtn>
+            </MDBModalFooter>
+          </MDBModal>
         </div>
       </div>
     );

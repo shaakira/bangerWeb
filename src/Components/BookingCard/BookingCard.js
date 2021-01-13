@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   MDBCol,
   MDBRow,
@@ -10,15 +11,20 @@ import {
   MDBModalHeader,
 } from "mdbreact";
 import { Accordion, Card } from "react-bootstrap";
-
+import moment from "moment";
 import Alert from "react-bootstrap/Alert";
 import "../BookingCard/BookingCard.css";
 class BookingCard extends React.Component {
- 
+  booking = this.props.data;
   state = {
     returnTime: "16:00",
     showDanger: false,
     modalVisibility: false,
+    returnDate: this.booking.returnDate,
+    pickUpDate: this.booking.pickUpDate,
+    booking: { returnTime: "" },
+    cancelBooking:{note:""},
+    cancelModal:false
   };
   toggle = () => {
     const { modalVisibility } = this.state;
@@ -30,11 +36,61 @@ class BookingCard extends React.Component {
       this.setState({ showDanger: false });
     }
   };
-  handleChange=(e)=>{
-    this.setState({ returnTime: e.target.value });
+  handleChange = (e) => {
+    this.setState({
+      returnTime: e.target.value,
+      booking: { returnTime: e.target.value },
+    });
+  };
+  handleExtend = async () => {
+    let token = localStorage.getItem("token");
+    await axios
+      .post(
+        `http://localhost:8080/api/booking/extendBooking/${this.booking.id}`,
+        this.state.booking,
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({ modalVisibility: false });
+          alert("Your booking extended successfully");
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+  handleCancel = async () => {
+    let token = localStorage.getItem("token");
+    await axios
+      .post(
+        `http://localhost:8080/api/booking/cancelBooking/${this.booking.id}`,
+        this.state.cancelBooking,
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          this.setState({ cancelModal: false });
+          alert("Booking cancelled successfully");
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
+  handleNoteChange=(e)=>{
+    this.setState({cancelBooking: {note:e.target.value}})
   }
   render() {
-    
+    const disabled =
+      this.state.returnTime > "16:00" ||
+      this.state.returnTime < this.booking.returnTime;
     return (
       <div>
         <div style={{ margin: "3rem" }}>
@@ -47,9 +103,16 @@ class BookingCard extends React.Component {
               <section style={{ backgroundColor: "white" }}>
                 <MDBRow>
                   <div className="dot-round">
-                    <h1>27</h1>
-                    <h6 style={{ marginTop: "-0.5rem" }}>
-                      <strong>OCTOBER</strong>
+                    <h1>{moment(this.state.pickUpDate).format("DD")}</h1>
+                    <h6
+                      style={{
+                        marginTop: "-0.5rem",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      <strong>
+                        {moment(this.state.pickUpDate).format("MMMM")}
+                      </strong>
                     </h6>
                   </div>
 
@@ -73,7 +136,7 @@ class BookingCard extends React.Component {
                               style={{ fontSize: "0.8rem" }}
                               className="grey-text"
                             >
-                              Pickup Time: 8:00
+                              Pickup Time: {this.booking.pickUpTime}
                             </p>
                             <p
                               style={{
@@ -94,21 +157,36 @@ class BookingCard extends React.Component {
                             <h6>
                               <strong>VEHICLE</strong>
                             </h6>
-                            <p className="grey-text">Audi</p>
+                            <p
+                              className="grey-text"
+                              style={{ textTransform: "capitalize" }}
+                            >
+                              {this.booking.vehicle.name}
+                            </p>
                           </MDBCol>
                           <MDBCol
-                            md="2"
-                            style={{ textAlign: "center", marginTop: "1rem" }}
+                            md={this.props.status === "visible" ? "2" : "0"}
+                            style={{
+                              textAlign: "center",
+                              marginTop: "1rem",
+                              visibility:
+                                this.props.status === "visible"
+                                  ? "visible"
+                                  : "hidden",
+                            }}
                           >
                             {" "}
                             <h6>
                               <strong>STATUS</strong>
                             </h6>
                             <p
-                              style={{ fontSize: "0.9rem" }}
+                              style={{
+                                fontSize: "0.9rem",
+                                textTransform: "capitalize",
+                              }}
                               className="amber-text"
                             >
-                              Pending
+                              {this.booking.status}
                             </p>
                           </MDBCol>
 
@@ -120,7 +198,7 @@ class BookingCard extends React.Component {
                             <h6>
                               <strong>TOTAL</strong>
                             </h6>
-                            <h5 className="grey-text">£129</h5>
+                            <h5 className="grey-text">£{this.booking.total}</h5>
                           </MDBCol>
                         </MDBRow>
                       </MDBContainer>
@@ -144,7 +222,7 @@ class BookingCard extends React.Component {
                           <MDBCol>
                             <p>Time period</p>
                           </MDBCol>
-                          <MDBCol>3 days</MDBCol>
+                          <MDBCol>{this.booking.timePeriod}</MDBCol>
                         </MDBRow>
                         <hr style={{ marginTop: "-0.5rem" }} />
                         <MDBRow
@@ -153,7 +231,9 @@ class BookingCard extends React.Component {
                           <MDBCol>
                             <p>Return date</p>
                           </MDBCol>
-                          <MDBCol>2020-12-12</MDBCol>
+                          <MDBCol>
+                            {moment(this.state.returnDate).format("yyyy-MM-DD")}
+                          </MDBCol>
                         </MDBRow>
                         <hr style={{ marginTop: "-0.5rem" }} />
                         <MDBRow
@@ -162,7 +242,7 @@ class BookingCard extends React.Component {
                           <MDBCol>
                             <p>Return time</p>
                           </MDBCol>
-                          <MDBCol>8:00</MDBCol>
+                          <MDBCol>{this.booking.returnTime}</MDBCol>
                         </MDBRow>
                         <hr style={{ marginTop: "-0.5rem" }} />
                         <MDBRow
@@ -178,14 +258,23 @@ class BookingCard extends React.Component {
                         </MDBRow>
                         <hr />
                       </div>
-                      <div>
-                        <strong>
-                          <p>EXTRA OPTIONS</p>
-                        </strong>
-                        <div style={{ fontSize: "0.8rem", color: "#636262" }}>
-                          1 X baby seat - £20
+                      {this.booking.bookingEquipments.length === 0 ? (
+                        <div></div>
+                      ) : (
+                        <div>
+                          <strong>
+                            <p>EXTRA OPTIONS</p>
+                          </strong>
+                          <div style={{ fontSize: "0.8rem", color: "#636262" }}>
+                            {this.booking.bookingEquipments.map((equipment) => (
+                              <p>
+                                {equipment.count} X {equipment.name} - £{" "}
+                                {equipment.count * equipment.price}
+                              </p>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </MDBCol>
                     <MDBCol md="5" style={{ marginLeft: "2rem" }}>
                       <div>
@@ -193,7 +282,7 @@ class BookingCard extends React.Component {
                           <p>VEHICLE DETAILS</p>
                         </strong>
                         <div style={{ fontSize: "0.8rem", color: "#636262" }}>
-                          <p>Audi</p>
+                          <p>{this.booking.vehicle.name}</p>
                         </div>
                       </div>
                       <div>
@@ -207,7 +296,7 @@ class BookingCard extends React.Component {
                             <MDBCol>
                               <p>Driver name</p>
                             </MDBCol>
-                            <MDBCol>Shaakira mubarak</MDBCol>
+                            <MDBCol>{this.booking.driver.firstName}</MDBCol>
                           </MDBRow>
                           <hr style={{ marginTop: "-0.5rem" }} />
                           <MDBRow
@@ -216,7 +305,7 @@ class BookingCard extends React.Component {
                             <MDBCol>
                               <p>License No</p>
                             </MDBCol>
-                            <MDBCol>47giou909</MDBCol>
+                            <MDBCol>{this.booking.driver.licenseNo}</MDBCol>
                           </MDBRow>
                           <hr style={{ marginTop: "-0.5rem" }} />
                         </div>
@@ -225,37 +314,62 @@ class BookingCard extends React.Component {
                         <MDBRow>
                           <MDBCol>
                             <strong>
-                              <p>TOTAL</p>{" "}
+                              <p>TOTAL</p>
                             </strong>
                           </MDBCol>
-                          <MDBCol>£300</MDBCol>
+                          <MDBCol>£ {this.booking.total}</MDBCol>
                         </MDBRow>
                       </div>
                     </MDBCol>
-                    <MDBCol style={{visibility:this.props.status==="visible"?'visible':'hidden'}}>
+                    <MDBCol
+                      style={{
+                        visibility:
+                          this.props.status === "visible"
+                            ? "visible"
+                            : "hidden",
+                      }}
+                    >
                       <hr />
-                      <MDBRow>
-                        <MDBBtn color="black" onClick={this.toggle}>
-                          <MDBIcon icon="pen" style={{ marginRight: "1rem" }} />
-                          Extend booking
-                        </MDBBtn>
-                        <div
-                          style={{
-                            color: "#c70404",
-                            fontSize: "0.8rem",
-                            marginLeft: "1rem",
-                            marginTop: "1rem",
-                          }}
-                        >
-                          <MDBIcon
-                            far
-                            icon="question-circle"
-                            style={{ marginRight: "0.2rem" }}
-                          />
-                          Booking can be extended up to 4pm on the day of
-                          return.(2020-12-12)
-                        </div>
-                      </MDBRow>
+                      {this.booking.returnTime <= this.state.returnTime ? (
+                        <MDBRow>
+                          <MDBCol md="4">
+                            <MDBBtn color="red" onClick={()=>this.setState({cancelModal:true})}>cancel booking</MDBBtn>
+                          </MDBCol>
+                          <MDBCol md="8">
+                            <MDBBtn color="black" onClick={this.toggle}>
+                              <MDBIcon
+                                icon="pen"
+                                style={{ marginRight: "1rem" }}
+                              />
+                              Extend booking
+                            </MDBBtn>
+                            <div
+                              style={{
+                                color: "#c70404",
+                                fontSize: "0.8rem",
+                                marginLeft: "1rem",
+                                marginTop: "1rem",
+                              }}
+                            >
+                              <MDBIcon
+                                far
+                                icon="question-circle"
+                                style={{ marginRight: "0.2rem" }}
+                              />
+                              Booking can be extended up to 4pm on the day of
+                              return.(
+                              {moment(this.state.returnDate).format(
+                                "yyyy-MM-DD"
+                              )}
+                              ).If there is no Booking for this vehicle
+                            </div>
+                          </MDBCol>
+                        </MDBRow>
+                      ) : (
+                        <MDBRow>
+                          <MDBBtn color="red">cancel booking</MDBBtn>
+                        </MDBRow>
+                      )}
                     </MDBCol>
                   </MDBRow>
                 </MDBContainer>
@@ -266,14 +380,15 @@ class BookingCard extends React.Component {
         <MDBContainer>
           <MDBModal
             isOpen={this.state.modalVisibility}
+            // isOpen={true}
             toggle={this.toggle}
             centered
           >
             <MDBModalHeader toggle={this.toggle}>Extend Booking</MDBModalHeader>
             <MDBModalBody>
               <h6 className="mb-2" style={{ fontSize: 14 }}>
-              Booking can be extended up to 4pm on the day of
-                          return.(2020-12-12)
+                Booking can be extended up to 4pm on the day of
+                return.(2020-12-12)
               </h6>
               <MDBRow style={{ marginTop: "1rem", marginBottom: "1rem" }}>
                 <MDBCol md="8">
@@ -287,18 +402,18 @@ class BookingCard extends React.Component {
                     name="deleteText"
                     required
                     value={this.state.returnTime}
-                    min="09:00" 
+                    min="09:00"
                     max="16:00"
-                      onChange={this.handleChange}
+                    onChange={this.handleChange}
                   />
-                    <span class="validity"></span>
+                  <span class="validity"></span>
                 </MDBCol>
                 <MDBCol>
                   <MDBBtn
                     color="black"
-                    type="submit"
                     style={{ marginTop: "1.5rem" }}
-                    //   onClick={this.onDeleteSubmit}
+                    onClick={this.handleExtend}
+                    disabled={disabled}
                   >
                     submit
                   </MDBBtn>
@@ -307,17 +422,59 @@ class BookingCard extends React.Component {
             </MDBModalBody>
           </MDBModal>
         </MDBContainer>
+        <MDBContainer>
+          <MDBModal isOpen={this.state.cancelModal} toggle={()=>this.setState({cancelModal:false})} centered>
+            <MDBModalHeader toggle={()=>this.setState({cancelModal:false})}>
+              Cancel Your Booking
+            </MDBModalHeader>
+            <MDBModalBody>
+              <div style={{ backgroundColor: "#d7edd5", padding: "1rem" }}>
+                <h6 className="mb-2" style={{ fontSize: 13 }}>
+                  <MDBIcon icon="exclamation" style={{ marginRight: "1rem" }} />
+                  This following information is only for our records and will
+                  not preventing youfrom cancelling order
+                </h6>
+              </div>
 
-        <Alert
-          variant="danger"
-          onClose={() => {
-            this.setState({ showDanger: false });
-          }}
-          dismissible
-          show={this.state.showDanger}
-        >
-          <p>Banger & Co couldn't delete your account. Try again later.</p>
-        </Alert>
+              <MDBRow style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+                <MDBCol md="8" style={{ margin: "1rem" }}>
+                  <label style={{ fontSize: 13 }} className="grey-text">
+                    Reason for cancellation
+                  </label>
+                  <br />
+                  <textarea
+                    className="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="5"
+                    name="note"
+                    value={this.state.cancelBooking.note}
+                    onChange={this.handleNoteChange}
+                  />
+                </MDBCol>
+              </MDBRow>
+              <div style={{ float: "right" }}>
+                <MDBRow>
+                  <MDBBtn
+                    color="white"
+                    style={{ marginTop: "1.5rem" }}
+                    onClick={()=>this.setState({cancelModal:false})}
+                    disabled={disabled}
+                  >
+                    Never mind
+                  </MDBBtn>
+                  <MDBBtn
+                    color="red"
+                    style={{ marginTop: "1.5rem" }}
+                    onClick={this.handleCancel}
+                    disabled={disabled}
+                  >
+                    cancel booking
+                  </MDBBtn>
+                </MDBRow>
+              </div>
+            </MDBModalBody>
+          </MDBModal>
+        </MDBContainer>
       </div>
     );
   }
