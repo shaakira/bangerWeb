@@ -12,7 +12,6 @@ import {
 } from "mdbreact";
 import { Accordion, Card } from "react-bootstrap";
 import moment from "moment";
-import Alert from "react-bootstrap/Alert";
 import "../BookingCard/BookingCard.css";
 class BookingCard extends React.Component {
   booking = this.props.data;
@@ -22,7 +21,7 @@ class BookingCard extends React.Component {
     modalVisibility: false,
     returnDate: this.booking.returnDate,
     pickUpDate: this.booking.pickUpDate,
-    booking: { returnTime: "" },
+    booking: { returnTime: "16:00" },
     cancelBooking:{note:""},
     cancelModal:false
   };
@@ -44,9 +43,10 @@ class BookingCard extends React.Component {
   };
   handleExtend = async () => {
     let token = localStorage.getItem("token");
+    let username=localStorage.getItem("username");
     await axios
       .post(
-        `http://localhost:8080/api/booking/extendBooking/${this.booking.id}`,
+        `http://localhost:8080/api/booking/extendBooking/${this.booking.id}/${username}`,
         this.state.booking,
         {
           headers: { Authorization: "Bearer " + token },
@@ -65,9 +65,10 @@ class BookingCard extends React.Component {
   };
   handleCancel = async () => {
     let token = localStorage.getItem("token");
+    let username=localStorage.getItem("username");
     await axios
       .post(
-        `http://localhost:8080/api/booking/cancelBooking/${this.booking.id}`,
+        `http://localhost:8080/api/booking/cancelBooking/${this.booking.id}/${username}`,
         this.state.cancelBooking,
         {
           headers: { Authorization: "Bearer " + token },
@@ -330,7 +331,7 @@ class BookingCard extends React.Component {
                       }}
                     >
                       <hr />
-                      {this.booking.returnTime <= this.state.returnTime ? (
+                      {this.booking.returnTime < this.state.returnTime ? (
                         <MDBRow>
                           <MDBCol md="4">
                             <MDBBtn color="red" onClick={()=>this.setState({cancelModal:true})}>cancel booking</MDBBtn>
@@ -367,7 +368,7 @@ class BookingCard extends React.Component {
                         </MDBRow>
                       ) : (
                         <MDBRow>
-                          <MDBBtn color="red">cancel booking</MDBBtn>
+                          <MDBBtn color="red" onClick={()=>this.setState({cancelModal:true})}>cancel booking</MDBBtn>
                         </MDBRow>
                       )}
                     </MDBCol>
@@ -466,7 +467,7 @@ class BookingCard extends React.Component {
                     color="red"
                     style={{ marginTop: "1.5rem" }}
                     onClick={this.handleCancel}
-                    disabled={disabled}
+                    disabled={this.state.cancelBooking.note===""}
                   >
                     cancel booking
                   </MDBBtn>

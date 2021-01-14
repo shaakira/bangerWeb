@@ -39,7 +39,7 @@ const FleetCarousel = () => {
             <div style={{textAlign:'center',display:'block'}}>
               <img src={slideImages[0]} />
                   <p className="font-weight-bold">SMALL TOWN CARS</p>
-                  <MDBBtn outline color='yellow'>
+                  <MDBBtn outline color='yellow' tag='a' href="/fleet">
                   View all
                 </MDBBtn>
             </div>
@@ -48,7 +48,7 @@ const FleetCarousel = () => {
             <div style={{textAlign:'center',display:'block'}}>
             <img src={slideImages[1]}/>
             <p className="font-weight-bold">SMALL FAMILY HATCHBACK</p>
-            <MDBBtn outline color='yellow'>
+            <MDBBtn outline color='yellow' tag='a' href="/fleet">
                  View  all
                 </MDBBtn>
             </div>
@@ -57,7 +57,7 @@ const FleetCarousel = () => {
             <div style={{textAlign:'center',display:'block'}}>
             <img src={slideImages[2]}/>
             <p className="font-weight-bold">FAMILY SALOON CARS</p>
-            <MDBBtn outline color='yellow'>
+            <MDBBtn outline color='yellow' tag='a' href="/fleet">
                view all
                 </MDBBtn>
             </div>
@@ -66,7 +66,7 @@ const FleetCarousel = () => {
             <div style={{textAlign:'center',display:'block'}}>
             <img src={slideImages[3]}/>
             <p className="font-weight-bold">FAMILY ESTATE CARS</p>
-            <MDBBtn outline color='yellow'>
+            <MDBBtn outline color='yellow' tag='a' href="/fleet">
                  view all
                 </MDBBtn>
             </div>
@@ -75,7 +75,7 @@ const FleetCarousel = () => {
             <div style={{textAlign:'center',display:'block'}}>
             <img src={slideImages[4]}/>
             <p className="font-weight-bold">MEDIUM VANS</p>
-            <MDBBtn outline color='yellow'>
+            <MDBBtn outline color='yellow' tag='a' href="/fleet">
                   view all
                 </MDBBtn>
             </div>

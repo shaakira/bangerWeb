@@ -48,15 +48,6 @@ class PastBookings extends React.Component {
                   upcoming booking
                 </MDBBtn>
               </a>
-
-              <MDBBtn
-                style={{ height: "2.5rem", color: "grey" }}
-                color="white"
-                size="sm"
-              >
-                <MDBIcon far icon="bell" style={{ marginRight: "0.5rem" }} />
-                notifications
-              </MDBBtn>
             </div>
           </BrowserRouter>
           <div style={{ marginTop: "4rem" }}>

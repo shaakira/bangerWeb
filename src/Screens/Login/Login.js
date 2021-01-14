@@ -5,10 +5,13 @@ import { MDBInput, MDBBtn, MDBAnimation, MDBIcon } from "mdbreact";
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Login/Login.css";
+import { Alert } from "react-bootstrap";
+
 
 class Login extends React.Component {
   state = {
     user: { userName: "", password: "" },
+    alertVisibility:false
   };
   handleSubmit = async () => {
     //Calling the back end endpoints
@@ -35,7 +38,7 @@ class Login extends React.Component {
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          console.log("user Credentials Wrong");
+          this.setState({alertVisibility:true})
         }
       });
   };
@@ -90,6 +93,15 @@ class Login extends React.Component {
                         validate
                       />
                     </div>
+                    <Alert
+                    variant="danger"
+                    dismissible
+                    show={this.state.alertVisibility}
+                    onClose={() => this.setState({ alertVisibility: false })}
+                    style={{ marginTop: "0.5rem" ,marginBottom:'1rem'}}
+                  >
+                    <p>Invalid user credentials</p>
+                  </Alert>
                     <div className="text-center">
                       <MDBBtn
                         outline
@@ -131,6 +143,7 @@ class Login extends React.Component {
                       </MDBBtn>
                     </div>
                   </form>
+                 
                 </MDBAnimation>
               </div>
 

@@ -49,7 +49,7 @@ class IntroPg extends React.Component {
                 <h6 className='mb-2' style={{marginTop:'2rem'}}>
                 Guaranteed! Book Online Today. Low Cost Rental from banger&co.lk. Unbeatable Prices. No Credit Card Fees. We Speak Your Language.
                 </h6>
-                <MDBBtn outline color='black' style={{marginTop:'5rem'}}>
+                <MDBBtn outline color='black' style={{marginTop:'5rem'}} tag='a' href="/aboutUs">
                   Learn More
                 </MDBBtn>
                 </ScrollAnimation>

@@ -27,7 +27,7 @@ class UpcomingBookings extends React.Component {
     const data=this.state.bookingList;
     return (
       <div>
-        <CustomerBookings />
+        <CustomerBookings past=""/>
         <div className="booking-cont">
         <BrowserRouter>
           <MDBNav className="nav-tabs " style={{ marginTop: "-4rem"}} >
@@ -50,14 +50,6 @@ class UpcomingBookings extends React.Component {
             </MDBBtn>
             </a>
 
-            <MDBBtn
-              style={{ height: "2.5rem", color: "grey" }}
-              color="white"
-              size="sm"
-            >
-              <MDBIcon far icon="bell" style={{ marginRight: "0.5rem" }} />
-              notifications
-            </MDBBtn>
           </div>
         </BrowserRouter>
         <div style={{marginTop:'4rem'}}>

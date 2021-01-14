@@ -22,6 +22,8 @@ import Equipments from "./Screens/Admin/Equipments/Equipments";
 import Vehicles from "./Screens/Admin/Vehicles/Vehicles";
 import Compare from "./Screens/Admin/Compare/Compare";
 import Bookings from "./Screens/Admin/Bookings/Bookings";
+import Notification from "./Screens/Admin/Notification/Notification";
+import BookingSuccess from "./Screens/Booking/BookingSteps/BookingSuccess/BookingSuccess";
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
         <Route exact path="/vehicles" component={Vehicles} />
         <Route exact path="/comparison" component={Compare} />
         <Route exact path="/bookings" component={Bookings} />
+        <Route exact path="/notification" component={Notification} />
+        <Route exact path="/bookingSuccess" component={BookingSuccess} />
       </Switch>
     </Router>
   );

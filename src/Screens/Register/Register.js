@@ -5,11 +5,15 @@ import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Register/Register.css";
 import axios from "axios";
+import { Alert } from "react-bootstrap";
+
 
 class Register extends React.Component {
   state = {
     user: { userName: "", email: "", password: "", customerName: "" },
     disabled: true,
+    errorText: "",
+    alertVisibility: false,
   };
 
   handleChange = (e) => {
@@ -29,7 +33,12 @@ class Register extends React.Component {
 
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>{
+        this.setState({
+          alertVisibility: true,
+          errorText: error.response.data.message,
+        });
+      });
   };
 
   render() {
@@ -146,6 +155,15 @@ class Register extends React.Component {
                       </MDBBtn>
                     </div>
                   </form>
+                  <Alert
+                    variant="danger"
+                    dismissible
+                    show={this.state.alertVisibility}
+                    onClose={() => this.setState({ alertVisibility: false })}
+                    style={{ marginTop: "0.5rem" ,marginBottom:'1rem'}}
+                  >
+                    <p>{this.state.errorText}</p>
+                  </Alert>
                 </MDBAnimation>
               </div>
             </div>

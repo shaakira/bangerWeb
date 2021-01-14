@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBNavbar, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem } from 'mdbreact';
+import { MDBNavbar, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem,MDBIcon } from 'mdbreact';
 import '../TopNavigation/TopNavigation.css'
 
 class TopNavigation extends React.Component {
@@ -30,7 +30,11 @@ class TopNavigation extends React.Component {
                 <MDBCollapse isOpen = { this.state.collapse } navbar>
                     
                     <MDBNavbarNav right>
+                    <MDBNavItem>
+                        <a href="/notification" ><MDBIcon far icon="bell" style={{marginRight:'1rem',marginTop:'1.2rem',color:'white'}} /></a>   
+                       </MDBNavItem>
                        <div className="ver-line"/>
+                     
                         <MDBNavItem>
                             <div className="dropdown">
                             <button
