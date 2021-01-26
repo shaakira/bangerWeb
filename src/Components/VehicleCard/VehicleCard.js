@@ -23,7 +23,7 @@ class VehicleCard extends React.Component {
             <div className="type-cont">{this.vehicle.type}</div>
           </MDBCol>
           <MDBCol md="7">
-            <img alt="" src={img} style={{ width: "255px" }} />
+            <img alt="" src={'http://localhost:8080/images/'+this.vehicle.image} style={{ width: "255px" }} />
           </MDBCol>
         </MDBRow>
         <div style={{ margin: "1rem" }}>
