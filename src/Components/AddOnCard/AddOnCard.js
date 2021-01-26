@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
-import babySeat from "../../Images/babyseat.jpg";
 import "../AddOnCard/AddOnCard.css";
 
 class AddOnCard extends React.Component{
@@ -9,7 +8,7 @@ class AddOnCard extends React.Component{
   render(){
     return (
       <section className="sec-container">
-        <img src={babySeat} width='150px' height='150px' style={{marginLeft:'50px'}}/>
+        <img src={'http://localhost:8080/images/'+this.equipment.image}  width='150px' height='150px' style={{marginLeft:'50px'}}/>
         <div
           style={{
             height: "50px",

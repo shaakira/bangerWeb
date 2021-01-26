@@ -238,7 +238,7 @@ class BookingStep4 extends React.Component {
               </div>
             </MDBCol>
             <MDBCol md="4" style={{ padding: "2rem" }}>
-              <img src={vehicle} alt="" className="img-fluid" />
+              <img src={'http://localhost:8080/images/'+detail.bookingDetails.bookingD.vehicle.image}  alt="" className="img-fluid" />
               <div className="left-container">
                 <h5>Vehicle Details</h5>
                 <p

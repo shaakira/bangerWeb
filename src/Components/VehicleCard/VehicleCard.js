@@ -1,6 +1,5 @@
 import React from "react";
-import axios from "axios";
-import { MDBBtn, MDBRow, MDBCol, MDBIcon } from "mdbreact";
+import { MDBRow, MDBCol } from "mdbreact";
 import img from "../../Images/car1.jpg";
 import passenger from "../../Images/passenger.png";
 import suitcase from "../../Images/suitcase.png";

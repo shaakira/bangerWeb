@@ -74,9 +74,25 @@ class Profile extends React.Component {
     }
   };
 
-  onDeleteSubmit = () => {
+  onDeleteSubmit = async () => {
     this.setState({ modalVisibility: false });
     if (this.state.deleteText === "DELETE") {
+      let token = localStorage.getItem("token");
+      await axios
+        .get(`http://localhost:8080/api/user/deleteUser/${this.state.username}`, {
+          headers: { Authorization: "Bearer " + token },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("user  successfully deleted");
+            localStorage.clear();
+            this.props.history.push("/");
+
+          }
+        })
+        .catch((error) => {
+          this.setState({modalVisibility:false})
+          alert(error.response.data.message)});
     } else {
       this.setState({ showDanger: true });
     }

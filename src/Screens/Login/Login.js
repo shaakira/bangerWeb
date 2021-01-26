@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { MDBInput, MDBBtn, MDBAnimation, MDBIcon } from "mdbreact";
+import {GoogleLogin} from 'react-google-login';
 import side from "../../Images/log.PNG";
 import logo from "../../Images/logo.png";
 import "../Login/Login.css";
@@ -27,6 +28,7 @@ class Login extends React.Component {
             localStorage.setItem("token", response.data.token);
 
             if (role === "ROLE_CUSTOMER") {
+              console.log('cus')
               this.props.history.push("/");
             } else if (role === "ROLE_ADMIN") {
               this.props.history.push("/dashboard");
@@ -43,6 +45,36 @@ class Login extends React.Component {
       });
   };
 
+  handleGoogleLogin=async(res)=>{
+   
+    const user={
+      email:res.email,
+      password:"default",
+      userName:res.givenName,
+      customerName:res.name
+    
+    }
+    
+    //Calling the back end endpoints
+    await axios.post("http://localhost:8080/GooglesignUp",user)
+     .then(response => 
+     { 
+        if(response.status===200){
+          console.log(response.data)
+          localStorage.setItem("username",response.data.username)
+          localStorage.setItem("token",response.data.token)
+          var role=response.data.roles[0];
+          
+          this.props.history.push("/")
+      }}
+     )
+    .catch(error => 
+    { 
+      console.log(error.response)
+     
+    });
+  } 
+
   handleChange = (e) => {
     //console.log("test change")
     const user = { ...this.state.user };
@@ -51,6 +83,15 @@ class Login extends React.Component {
     // console.log(JSON.stringify(user))
   };
   render() {
+    const  onSuccess=res=>{
+    
+      console.log('[Login Sucess] Current User:',res.profileObj);
+      this.handleGoogleLogin(res.profileObj);
+    };
+
+ const   onFailure =res=>{
+console.log('[Login failed] res :',res);
+    };
     return (
       <section>
         <div className="div-style">
@@ -137,10 +178,17 @@ class Login extends React.Component {
                       />
                     </div>
                     <div className="text-center">
-                      <MDBBtn color="black">
-                        <MDBIcon fab icon="google" />
-                        <span style={{ marginLeft: "1rem" }}>Google</span>
-                      </MDBBtn>
+
+                    <GoogleLogin 
+                    clientId='1059808502397-ddpuiv62rnnr3p1plutf4hmqn38cd8be.apps.googleusercontent.com'
+                  
+                    onSuccess={onSuccess}
+                    onFailure={onFailure}
+                    cookiePolicy={'single_host_origin'}
+                      >
+                        
+                        <span>GOOGLE</span>
+                      </GoogleLogin>
                     </div>
                   </form>
                  

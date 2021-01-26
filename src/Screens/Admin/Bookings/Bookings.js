@@ -108,7 +108,6 @@ class Bookings extends React.Component {
       .catch((error) => console.log(error));
   };
   handleCancel = async (item) => {
-    let token = localStorage.getItem("token");
     
   };
   render() {

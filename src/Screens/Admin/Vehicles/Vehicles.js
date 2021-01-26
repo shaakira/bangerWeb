@@ -10,7 +10,7 @@ import {
   MDBModalBody,
   MDBModalHeader,
 } from "mdbreact";
-import { Alert, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import image from "../../../Images/upload.png";
 import SideNav from "../../../Components/SideNav/SideNav";
 import TopNavigation from "../../../Components/TopNavigation/TopNavigation";
@@ -61,21 +61,21 @@ class Vehicles extends React.Component {
     console.log(this.state.newVehicle);
     const formData = new FormData();
     formData.append("file", this.state.file);
-    formData.append("name",this.state.newVehicle.name);
-    formData.append("price",this.state.newVehicle.price);
-    formData.append("description",this.state.newVehicle.description);
-    formData.append("passengerCount",this.state.newVehicle.passengerCount);
-    formData.append("baggageCount",this.state.newVehicle.baggageCount);
-    formData.append("transmission",this.state.newVehicle.transmission);
-    formData.append("engine",this.state.newVehicle.engine);
-    formData.append("AC",this.state.newVehicle.AC);
-    formData.append("doorCount",this.state.newVehicle.doorCount);
-    formData.append("fuelType",this.state.newVehicle.fuelType);
-    formData.append("fuelPolicy",this.state.newVehicle.fuelPolicy);
-    formData.append("type",this.state.newVehicle.type);
+    formData.append("name", this.state.newVehicle.name);
+    formData.append("price", this.state.newVehicle.price);
+    formData.append("description", this.state.newVehicle.description);
+    formData.append("passengerCount", this.state.newVehicle.passengerCount);
+    formData.append("baggageCount", this.state.newVehicle.baggageCount);
+    formData.append("transmission", this.state.newVehicle.transmission);
+    formData.append("engine", this.state.newVehicle.engine);
+    formData.append("AC", this.state.newVehicle.AC);
+    formData.append("doorCount", this.state.newVehicle.doorCount);
+    formData.append("fuelType", this.state.newVehicle.fuelType);
+    formData.append("fuelPolicy", this.state.newVehicle.fuelPolicy);
+    formData.append("type", this.state.newVehicle.type);
     console.log(token);
     await axios
-      .post(`http://localhost:8080/api/v1/vehicle/addVehicle`,formData,{
+      .post(`http://localhost:8080/api/v1/vehicle/addVehicle`, formData, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -84,7 +84,7 @@ class Vehicles extends React.Component {
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
-          this.setState({addModal:false})
+          this.setState({ addModal: false });
           this.loadData();
           alert("Vehicle Added successfully.");
         }
@@ -92,7 +92,6 @@ class Vehicles extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-
 
     console.log(this.state.newVehicle);
   };
@@ -105,11 +104,11 @@ class Vehicles extends React.Component {
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log("deleted");
-          this.componentDidMount();
+          alert("Vehicle  successfully deleted");
+          window.location.reload();
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error.response.data.message));
   };
   openModal = (item) => {
     this.setState({
@@ -179,7 +178,7 @@ class Vehicles extends React.Component {
                     onClick={() => this.setState({ addModal: true })}
                   >
                     <MDBIcon icon="plus" style={{ marginRight: "1rem" }} />
-                    add equipment
+                    add vehicle
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>

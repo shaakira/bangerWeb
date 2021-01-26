@@ -1,6 +1,6 @@
 import React from "react";
-import axios from 'axios';
-
+import axios from "axios";
+import ChatBot from "react-simple-chatbot";
 import {
   MDBMask,
   MDBRow,
@@ -11,34 +11,58 @@ import {
   MDBIcon,
   MDBInput,
   MDBBtn,
+  MDBModal,
 } from "mdbreact";
 import ScrollAnimation from "react-animate-on-scroll";
 import slider1 from "../../Images/contactUs.PNG";
 import Footer from "../../Components/Footer/Footer";
 import NavBar from "../../Components/NavBar/NavBar";
+import { ThemeProvider } from "styled-components";
+import "../ContactUs/ContactUs.css";
 class ContactUs extends React.Component {
   state = {
     contact: { name: "", email: "", subject: "", message: "" },
+    modal: false,
   };
-
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  };
   handleChange = (e) => {
     const contact = { ...this.state.contact };
     contact[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ contact });
   };
-  handleSubmit =async()=>{
-
-    await  axios.post("http://localhost:8080/api/contact/addContact",this.state.contact)
-      .then(response=>{
-        if(response.status===200){
-          console.log("Submitted")
-          this.setState({contact:{name: "", email: "", subject: "", message: ""}})
+  handleSubmit = async () => {
+    await axios
+      .post("http://localhost:8080/api/contact/addContact", this.state.contact)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Submitted");
+          this.setState({
+            contact: { name: "", email: "", subject: "", message: "" },
+          });
         }
       })
-      .catch(error=>
-        console.log(error))
-    }
+      .catch((error) => console.log(error));
+  };
   render() {
+    const theme = {
+      background: "#f5f8fb",
+      headerBgColor: "black",
+      headerFontColor: "#fff",
+      headerFontSize: "18px",
+      botBubbleColor: "black",
+      botFontColor: "#fff",
+      userBubbleColor: "#fff",
+      userFontColor: "#4a4a4a",
+    };
+    const disable =
+      this.state.contact.name === "" ||
+      this.state.contact.email === "" ||
+      this.state.contact.subject === "" ||
+      this.state.contact.message === "";
     return (
       <div id="minimalistintro">
         <NavBar active="contact" />
@@ -70,6 +94,28 @@ class ContactUs extends React.Component {
               </MDBAnimation>
             </MDBRow>
           </MDBContainer>
+          <div
+            style={{
+              position: "fixed",
+              right: 0,
+              zIndex: 100,
+              marginRight: "10px",
+            }}
+          >
+            <MDBBtn
+              color="black"
+              style={{ borderRadius: "75%", padding: 0 }}
+              onClick={this.toggle}
+            >
+              <MDBIcon
+                far
+                size="2x"
+                icon="comment"
+                className="amber-text"
+                style={{ margin: "15px" }}
+              />
+            </MDBBtn>
+          </div>
         </MDBView>
 
         <MDBRow style={{ height: "700px" }}>
@@ -148,7 +194,13 @@ class ContactUs extends React.Component {
               </MDBRow>
             </form>
             <div className="text-center text-md-left">
-              <MDBBtn color="black" size="md" outline onClick={e=>this.handleSubmit()}>
+              <MDBBtn
+                color="black"
+                size="md"
+                outline
+                onClick={(e) => this.handleSubmit()}
+                disabled={disable}
+              >
                 submit
               </MDBBtn>
             </div>
@@ -197,6 +249,52 @@ class ContactUs extends React.Component {
         </MDBRow>
         <div style={{ marginTop: "2rem" }}>
           <Footer />
+        </div>
+        <div>
+          <MDBModal
+            isOpen={this.state.modal}
+            toggle={this.toggle}
+            side
+            position="top-right"
+            className="special_modal"
+          >
+            <ThemeProvider theme={theme}>
+              <ChatBot
+                steps={[
+                  {
+                    id: "1",
+                    message: "What is your name?",
+                    trigger: "2",
+                  },
+                  {
+                    id: "2",
+                    user: true,
+                    trigger: "3",
+                  },
+                  {
+                    id: "3",
+                    message: "Hi {previousValue}, nice to meet you!",
+                    trigger: "4",
+                  },
+                  {
+                    id: "4",
+                    message: "How can i help You",
+                    trigger: "5",
+                  },
+                  {
+                    id: "5",
+                    user: true,
+                    trigger: "6",
+                  },
+                  {
+                    id: "6",
+                    message: "What Type of Car do u want?",
+                    trigger: "5",
+                  },
+                ]}
+              />
+            </ThemeProvider>
+          </MDBModal>
         </div>
       </div>
     );

@@ -23,7 +23,7 @@ class FleetCard extends React.Component {
         <div className="container-style">
           <section className="inner-cont">
             <div className="img-container">
-              <img src={img} className="imgs-style" />
+              <img src={'http://localhost:8080/images/'+this.vehicle.image}  className="imgs-style" />
             </div>
             <div className="des-container">
               <h4 className="mb-2">{this.vehicle.name}</h4>
